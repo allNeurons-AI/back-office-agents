@@ -1,5 +1,7 @@
 # Finance Skills
 
+![logo](./assets/logo.png)
+
 At All Neurons, we believe finance teams shouldn't spend their time doing what a well-built AI agent can do in seconds. We build agent skills that plug directly into the tools finance professionals already use — no new software, no integrations, no IT tickets. Just upload your data and get back an answer.
 
 Our finance skills handle the work that quietly consumes hours every month: explaining why a GL account moved, extracting buried obligations from lease packages, reconciling multi-currency exports, flagging entity-level miscodings before they become audit findings. Every skill is grounded in real transactions and real documents — it won't invent an answer the data doesn't support.
