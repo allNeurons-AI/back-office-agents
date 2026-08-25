@@ -4,6 +4,7 @@
 
 - [Download the Skill](https://pragyaallc-my.sharepoint.com/:t:/g/personal/sachin_parmar_legalgraph_ai/IQDPHZDlmVkWSYXVHt04gRHCAdLdjTwOiHgFSYKoEkw9IUA)
 - [Download the Sample Data](https://pragyaallc-my.sharepoint.com/:x:/g/personal/sachin_parmar_legalgraph_ai/IQDiMlGrJpeqToN5KId0SM9cARgT8uqdDWHE_9qlrBRpWSk?e=7ntjIw)
+- [Don't know how to add a skill in Claude? Click here](../../foundation/setup-skill-in-claude/readme.md)
 
 ---
 
