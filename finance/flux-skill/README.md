@@ -16,12 +16,15 @@ You don't need both — one working data source is enough to run an analysis. Ha
 
 ## The problem this skill solves
 
-Every month, someone in finance has to answer questions like "why did this account move," "what's driving the change in spend," or "does this number tie out" — and today that means manually pulling a report, dropping it into a spreadsheet, sorting by vendor, hunting through memo lines for context, and writing up findings by hand. It's repetitive, slow, and every analyst does it slightly differently.
+Every month, someone in finance has to answer questions like "why did this account move," "what's driving the change in spend," or "does this number tie out." Today that means pulling a report, dropping it into a spreadsheet, sorting by vendor, hunting through memo lines for context, and writing up findings by hand — repetitive, slow, and done a little differently by every analyst.
 
-This skill automates that entire workflow: it pulls the data itself (live from NetSuite or from a file on your shared drive), figures out the shape of the data without needing to be told your chart of accounts or report layout, proposes a short analysis plan for you to approve, then executes the analysis and hands back a formatted Excel workbook with the numbers, the findings, and the underlying evidence — all reconciled and ready to send along.
+This skill calculates the flux for you and hands back the answer in minutes, not hours. Point it at whatever source you have — live NetSuite or a file on your shared drive — and it pulls the data itself, figures out the shape of it without being told your chart of accounts or report layout, proposes a short analysis plan for you to approve, then runs the analysis and delivers a formatted Excel workbook with the numbers, the findings, and the underlying evidence — all reconciled and ready to send along.
 
 ## Benefits of using this skill
 
+- **Calculates the flux for you.** No manually pivoting a GL export or hunting through hundreds of lines to figure out what moved and why.
+- **Saves hours every close.** What used to take an analyst an afternoon of copy-pasting and reconciling is done in minutes.
+- **Connects with whatever source you have.** Live NetSuite or a file on your shared drive (OneDrive/SharePoint) — either works, no integration required.
 - **No manual pulling or copy-pasting.** It retrieves the data directly from NetSuite or your shared drive — you never have to export, download, or reformat anything yourself.
 - **Works the same way regardless of source.** Whether the data comes from live NetSuite or a plain Excel export, the analysis method, the plan, and the output are consistent.
 - **Nothing runs on autopilot.** You see and approve a plain-language plan — scope, period, method, output — before any heavy computation happens.
@@ -95,6 +98,10 @@ The deliverable is a single formatted Excel workbook. The exact columns and crit
 ![images](./assets/16.png)
 
 ## How the skill works behind the scenes
+
+**At a high level**, the skill runs a five-stage pipeline: it scopes your ask by clarifying only what's actually missing; connects to whatever data source you have (NetSuite, a shared drive, or a direct upload) and auto-detects its shape rather than requiring configuration; normalizes and validates the data before doing anything with it; builds a plan and pauses for your approval before running the real analysis, always tying findings back to an actual transaction memo instead of inventing an explanation; and finally reconciles its own totals before handing you the workbook, staying available for follow-up questions on the same data. In short — it earns trust at each step (ask before guessing, show the plan before computing, reconcile before delivering) rather than acting as a black box that just returns a number.
+
+The full step-by-step:
 
 1. **Understand the request.** It reads what you're asking for and only asks clarifying questions about what's genuinely missing — the objective, the scope, the period(s), and entity/segment boundaries.
 2. **Choose and connect the data source.** You pick NetSuite, a shared drive, or a direct file upload. If the relevant connector isn't active, the skill detects that, surfaces a connect link, waits for you to authenticate, and rechecks automatically before continuing.
