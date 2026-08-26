@@ -1,6 +1,6 @@
 # Financial Analysis Skill — allneurons
 
-![images](./assets/architecture.png)
+![images](./assets/18.png)
 
 ## Prerequisites
 
