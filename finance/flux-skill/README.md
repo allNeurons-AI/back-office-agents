@@ -180,3 +180,7 @@ Flags vendors whose movement looks like it may be miscoded across entities — a
 - It won't guess a driver a memo doesn't support.
 - It won't assert a booking error is confirmed — entity anomalies are flagged "for review".
 - It doesn't connect to any accounting system; it only reads the file you give it.
+
+---
+
+*Questions, feedback, or ideas for the next finance skill? Open an issue on this repo or reach out to allNeurons.*
