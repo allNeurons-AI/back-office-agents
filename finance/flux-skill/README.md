@@ -1,6 +1,6 @@
 # Financial Analysis Skill — allneurons
 
-![images](./assets/18.png)
+![images](./assets/a1final.png)
 
 ## Prerequisites
 
@@ -31,6 +31,7 @@ This skill calculates the flux for you and hands back the answer in minutes, not
 - **Every finding is grounded in real evidence.** No invented explanations — each flagged item is backed by an actual transaction memo or description, or it's honestly reported as "no clear driver in the data."
 - **Everything ties out.** Every summary total is checked against an independently computed control total before the workbook is handed to you.
 - **A polished, shareable deliverable.** You get a formatted Excel workbook (Summary, Findings, Detail, and Exceptions tabs) — not a wall of chat text you have to reformat yourself.
+- **Saves to OneDrive on request.** After confirming with you, the skill can write the finished workbook straight to your OneDrive/SharePoint — no manual download-and-reupload.
 
 ## Connecting both NetSuite and OneDrive
 
@@ -74,10 +75,14 @@ If a connector isn't set up yet, just tell the skill what you want to analyze �
 
 ![images](./assets/12.png)
 
+7. **Save it to OneDrive, if you want.** The skill asks whether you'd like the workbook saved to your OneDrive/SharePoint — confirm and it saves it there for you; decline and you keep the file in-chat only.
+
+![images](./assets/19.png)
+
 
 ## Output
 
-The deliverable is a single formatted Excel workbook. The exact columns and criteria are proposed in the analysis plan and can be adjusted before the skill runs, but the workbook typically contains four tabs:
+The deliverable is a single formatted Excel workbook, delivered in-chat. The skill will then ask whether you'd like it saved to OneDrive/SharePoint as well — it only writes to your shared drive after you confirm. The exact columns and criteria are proposed in the analysis plan and can be adjusted before the skill runs, but the workbook typically contains four tabs:
 
 1. Summary — the headline comparison table, rolled up by the chosen dimension (usually vendor). Shows Period A, Period B, the dollar Delta, and the % Change, with a TOTAL row and a formula-based tie-out that checks the total against an independently computed control total from the Detail tab — so you can see at a glance that nothing was dropped or double-counted.
 
@@ -112,3 +117,4 @@ The full step-by-step:
 9. **Build the Excel workbook.** Typically a Summary tab (rolled-up comparison with a formula-based tie-out), a Findings tab (top movers with evidence and review flags), a Detail tab (every underlying transaction line), and an Exceptions/Review tab (anything flagged for human follow-up).
 10. **Verify before handing it over.** The summary total is reconciled against an independently computed control total, row counts and numeric values are sanity-checked, and any known caveat (an FX residual, an excluded book) is named explicitly rather than left as a silent mismatch.
 11. **Present the result.** You get the finished workbook plus a short, plain-language headline of the key findings — and you can keep asking follow-up questions (like "break this down by cost center") against the same data without starting over.
+12. **Offer to save it to OneDrive.** The skill asks for confirmation before saving anything to your shared drive — only once you confirm does it write the workbook to OneDrive/SharePoint; otherwise the file stays in-chat only.
