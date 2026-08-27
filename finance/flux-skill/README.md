@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-- [Download the skill](https://pragyaallc-my.sharepoint.com/:u:/g/personal/sachin_parmar_legalgraph_ai/IQDPeeok8fV8Tq-aUwMpsnY0AfT1suuYUISsK5jFQ-npCK8?e=9BhWW6)
+- [Download the skill](https://pragyaallc-my.sharepoint.com/:u:/g/personal/sachin_parmar_legalgraph_ai/IQDPeeok8fV8Tq-aUwMpsnY0AfT1suuYUISsK5jFQ-npCK8?e=5NSrHq)
 - [Don't know how to add a skill in Claude? Click here](../../foundation/setup-skill-in-claude/readme.md)
 - **A persistent, user-visible folder connected** (Share Drive/SharePoint or another synced location). The skill keeps a small `allneurons-flux/` configuration folder there so your setup survives across sessions and scheduled runs — it can't be a temporary chat scratch space.
 
@@ -42,6 +42,7 @@ In the form, add a scheduled job by giving it: a **name** (e.g. "Monthly T&E var
 ![images](./assets/24.png)
 
 6. **Decide where it's saved.** Claude will also ask whether you want the output file saved to your Share Drive, or kept in-chat only.
+7. **Get notified.** Once the output is ready — or a scheduled job finishes running — you'll get an email letting you know it's done.
 
 
 ## The problem this skill solves
@@ -99,3 +100,4 @@ The full step-by-step:
 9. **Build the Excel workbook** — Summary, Findings, Detail, and Exceptions/Review tabs, using formulas rather than hardcoded numbers.
 10. **Verify before delivering** — the rolled-up total is reconciled against an independently computed control total, and any deliberate exclusion or residual is named next to the number.
 11. **Deliver.** Interactive: hand over the file, then ask about an optional OneDrive save. Scheduled: save locally unconditionally, then attempt an optional Share Drive save without blocking on it.
+12. **Notify.** Once the output is ready — the file is delivered in chat, or a scheduled job finishes — you get an email letting you know it's done, so you don't have to keep checking back.
