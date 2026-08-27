@@ -1,120 +1,101 @@
-# Financial Analysis Skill — allneurons
+# Variance Analysis Skill — allneurons
 
-![images](./assets/a1final.png)
+![images](./assets/78.png)
 
 ## Prerequisites
 
-- [Download the skill](https://pragyaallc-my.sharepoint.com/:u:/g/personal/sachin_parmar_legalgraph_ai/IQCtP-MgpWL9TLufMMIrzP55AVZ4mTSjTHIr2LgjzbJov2A?e=zKlHf6)
+- [Download the skill](https://pragyaallc-my.sharepoint.com/:u:/g/personal/sachin_parmar_legalgraph_ai/IQDPeeok8fV8Tq-aUwMpsnY0AfT1suuYUISsK5jFQ-npCK8?e=9BhWW6)
 - [Don't know how to add a skill in Claude? Click here](../../foundation/setup-skill-in-claude/readme.md)
+- **A persistent, user-visible folder connected** (Share Drive/SharePoint or another synced location). The skill keeps a small `allneurons-flux/` configuration folder there so your setup survives across sessions and scheduled runs — it can't be a temporary chat scratch space.
 
-Before running the skill, make sure at least one of the following is true:
+Before running an analysis, make sure at least one of the following is true:
 
 - **NetSuite is connected**, giving live access to GL detail, accounting periods, subsidiaries, and accounting books, or
-- **Your data lives in OneDrive/SharePoint** (or you have a file ready to upload directly), such as a GL export, trial balance, or similar spreadsheet.
+- **Your data lives in a Share Drive/SharePoint folder** you've told the skill about, or you have a file ready to provide directly (Manual).
 
-You don't need both — one working data source is enough to run an analysis. Having both connected simply gives you the flexibility to choose per request (see below).
-
-## The problem this skill solves
-
-Every month, someone in finance has to answer questions like "why did this account move," "what's driving the change in spend," or "does this number tie out." Today that means pulling a report, dropping it into a spreadsheet, sorting by vendor, hunting through memo lines for context, and writing up findings by hand — repetitive, slow, and done a little differently by every analyst.
-
-This skill calculates the flux for you and hands back the answer in minutes, not hours. Point it at whatever source you have — live NetSuite or a file on your shared drive — and it pulls the data itself, figures out the shape of it without being told your chart of accounts or report layout, proposes a short analysis plan for you to approve, then runs the analysis and delivers a formatted Excel workbook with the numbers, the findings, and the underlying evidence — all reconciled and ready to send along.
-
-## Benefits of using this skill
-
-- **Calculates the flux for you.** No manually pivoting a GL export or hunting through hundreds of lines to figure out what moved and why.
-- **Saves hours every close.** What used to take an analyst an afternoon of copy-pasting and reconciling is done in minutes.
-- **Connects with whatever source you have.** Live NetSuite or a file on your shared drive (OneDrive/SharePoint) — either works, no integration required.
-- **No manual pulling or copy-pasting.** It retrieves the data directly from NetSuite or your shared drive — you never have to export, download, or reformat anything yourself.
-- **Works the same way regardless of source.** Whether the data comes from live NetSuite or a plain Excel export, the analysis method, the plan, and the output are consistent.
-- **Nothing runs on autopilot.** You see and approve a plain-language plan — scope, period, method, output — before any heavy computation happens.
-- **Every finding is grounded in real evidence.** No invented explanations — each flagged item is backed by an actual transaction memo or description, or it's honestly reported as "no clear driver in the data."
-- **Everything ties out.** Every summary total is checked against an independently computed control total before the workbook is handed to you.
-- **A polished, shareable deliverable.** You get a formatted Excel workbook (Summary, Findings, Detail, and Exceptions tabs) — not a wall of chat text you have to reformat yourself.
-- **Saves to OneDrive on request.** After confirming with you, the skill can write the finished workbook straight to your OneDrive/SharePoint — no manual download-and-reupload.
-
-## Connecting both NetSuite and OneDrive
-
-You can have both connectors active at the same time — there's no conflict. When you kick off a request, the skill asks you which source to use for that specific analysis, so you can pull one account from live NetSuite today and analyze an emailed spreadsheet export tomorrow, without reconnecting anything.
-
-**To connect NetSuite:** if it isn't already connected, the skill will detect that and surface a connect/authenticate link automatically the first time you request live data. You don't need to look up or configure the connector yourself — just complete the authentication when prompted.
-
-**To connect OneDrive/SharePoint:** same process — the skill detects whether the connector is active, and if not, surfaces a connect link for Microsoft 365 (which covers OneDrive, SharePoint, Outlook, and Teams). Once connected, the skill can search your shared drive directly and pull the relevant file without you downloading or re-uploading it.
-
-If a connector isn't set up yet, just tell the skill what you want to analyze — it will notice the gap, prompt you to connect, wait, and then continue automatically once you're authenticated.
+You don't need all three — one working data source is enough. You can also set up multiple scheduled jobs that each use a different data source.
 
 ## How to run the skill
 
-1. **State what you want to understand.** For example: "why did travel and entertainment move between May and June" or "explain the variance in account 63200." You don't need to name a technique — just describe the question in plain language.
+1. **Go to Claude Cowork.**
+2. **Invoke the skill** — make sure you've uploaded/added it first (see Prerequisites above). The first time you run it, it will ask you to attach/connect a folder, and it will create a small configuration folder inside it. It will also ask if you want to set up a scheduled job so you don't have to run the analysis manually every time — set one up now or skip it, based on your preference (more on this below in step 3).
+
+![images](./assets/20.png)
+
+3. **Fill in the form.** The skill hands you an artifact/file — open it and you'll see a form where you provide your details: data source, accounts, flux thresholds, and any scheduled jobs.
+
+![images](./assets/21.png)
+
+**What's a scheduled job?** It's a recurring variance run you set up once so the skill fires it automatically — daily, weekly, or monthly — instead of you having to ask for the same analysis every period.
+
+In the form, add a scheduled job by giving it: a **name** (e.g. "Monthly T&E variance"), the **frequency and time** it should run (daily/weekly/monthly, plus day and time), which **account(s)** it covers, which **data source** to pull from (or leave it on the global default), and where the **output** should be saved (always saved locally; optionally also to a Share Drive folder). You can add more than one job, each with its own settings.
+
+4. **Connect your data source.** Once you've submitted the form, Claude will ask you to connect the relevant connector — NetSuite, Share Drive/SharePoint, etc. — based on what you chose.
+
+![images](./assets/22.png)
 
 
-![images](./assets/7.png)
+![images](./assets/23.png)
 
-2. **Answer a couple of quick clarifying questions**, if anything is ambiguous — typically the account/category, the period(s) being compared, and whether to scope to a specific entity or department.
+5. **Get your workbook.** Once you're connected, the skill runs the analysis and delivers an Excel workbook with everything in it — the flux, the findings, and the supporting detail.
 
+![images](./assets/24.png)
 
-![images](./assets/8.png)
-
-3. **Pick your data source** — NetSuite (live), OneDrive/SharePoint, or a file you upload directly.
-
-
-![images](./assets/10.png)
-
-4. **Connect, if needed.** If the chosen source isn't connected yet, follow the prompt to authenticate; the skill picks up automatically once it detects the connection is live.
+6. **Decide where it's saved.** Claude will also ask whether you want the output file saved to your Share Drive, or kept in-chat only.
 
 
-![images](./assets/10.png)
+## The problem this skill solves
 
+Every close, someone in finance has to answer "why did this account move" or "what's driving the change in spend." Today that means pulling a report, sorting by vendor, hunting through memo lines for context, and writing up findings by hand — and doing it all over again next month.
 
-5. **Review the analysis plan.** The skill will show you exactly what it found (the file or report, the accounts/periods in scope, the currency approach, the method, and the proposed output structure) before doing anything else. Approve it, or ask for changes.
+This skill sets up once — your accounts, data source, and flux thresholds — and from then on runs the same analysis on demand or on a schedule, pulling the data itself, proposing a short plan for you to approve, and handing back a reconciled Excel workbook with the numbers, the findings, and the underlying evidence.
 
-![images](./assets/11.png)
+## Benefits of using this skill
 
-
-6. **Get your workbook.** Once approved, the skill pulls the full data, runs the analysis, verifies everything ties out, and delivers a formatted Excel file with a plain-language summary of the key findings.
-
-![images](./assets/12.png)
-
-7. **Save it to OneDrive, if you want.** The skill asks whether you'd like the workbook saved to your OneDrive/SharePoint — confirm and it saves it there for you; decline and you keep the file in-chat only.
-
-![images](./assets/19.png)
-
+- **Configure once, reuse every time.** Accounts, data source, thresholds, and rollup dimension are saved to a config file — you're not asked the same setup questions on every run.
+- **Runs on a schedule, not just on demand.** Set up one or more scheduled jobs (e.g. "Monthly T&E variance, 9am on the 1st") each with its own frequency, accounts, and data source — no manual poking required.
+- **Connects with whatever source you have.** Live NetSuite, a Share Drive/SharePoint folder, or a file you provide directly — any of the three works, per run or per scheduled job.
+- **Nothing runs on autopilot for an interactive request.** An ad hoc run always shows a plain-language plan — scope, periods, method, output — and waits for your approval before doing any heavy computation. A scheduled job skips this gate because you already approved its settings when you saved it.
+- **Every finding is grounded in real evidence.** No invented explanations — each flagged item is backed by an actual transaction memo or description, or it's honestly reported as "no clear driver found in the data."
+- **Everything ties out.** Every summary total is checked against an independently computed control total before the workbook is handed to you.
+- **A polished, shareable deliverable.** A timestamped Excel workbook (Summary, Findings, Detail, and Exceptions/Review tabs) — not chat text you have to reformat yourself.
+- **Scheduled output is never lost to a connector hiccup.** Every scheduled run saves its workbook locally first, unconditionally; an optional Share Drive copy is attempted on top of that, never instead of it.
+- **Saves to OneDrive on request.** For an interactive run, after delivering the file the skill asks if you'd like it saved to OneDrive/SharePoint too.
 
 ## Output
 
-The deliverable is a single formatted Excel workbook, delivered in-chat. The skill will then ask whether you'd like it saved to OneDrive/SharePoint as well — it only writes to your shared drive after you confirm. The exact columns and criteria are proposed in the analysis plan and can be adjusted before the skill runs, but the workbook typically contains four tabs:
+The deliverable is a single, timestamped Excel workbook. For interactive runs it's delivered in-chat first, with an optional OneDrive save after; for scheduled runs it's saved automatically per that job's output settings. The workbook contains four tabs:
 
-1. Summary — the headline comparison table, rolled up by the chosen dimension (usually vendor). Shows Period A, Period B, the dollar Delta, and the % Change, with a TOTAL row and a formula-based tie-out that checks the total against an independently computed control total from the Detail tab — so you can see at a glance that nothing was dropped or double-counted.
+1. **Summary** — the headline comparison table, rolled up by the chosen dimension (vendor, entity, or cost center by default). Shows Period A, Period B, the dollar Delta, and the % Change, with a formula-based tie-out against an independently computed control total.
 
 ![images](./assets/13.png)
 
-2. Findings — one row per notable item: what changed, the type of change (new vendor, increase, decrease, flat), the dollar delta, the source evidence (the actual transaction memo or description backing it up), an interpretation of why it likely moved (clearly labeled as interpretation, not fact), and whether it's flagged as needing human review.
+2. **Findings** — one row per notable item: what changed, the type of change (new counterparty, increase, decrease, flat), the dollar delta, the source evidence (the actual transaction memo or description backing it up), an interpretation clearly labeled as interpretation rather than fact, and whether it's flagged for human review.
 
 ![images](./assets/14.png)
 
-3. Detail — every underlying transaction line in scope, not a sample — period, subsidiary, currency, document number, date, vendor, memo, functional-currency amount, FX rate applied, USD amount, and entity/cost center. This is what lets you trace any Summary or Findings number back to its source.
+3. **Detail** — every underlying transaction line in scope, not a sample — period, entity, currency, vendor, memo, amount, and FX handling where relevant. This is what lets you trace any Summary or Findings number back to its source.
 
 ![images](./assets/15.png)
 
-4. Exceptions / Review — items that don't fit neatly into "Findings," such as entity-level miscoding candidates (two large offsetting postings that net to a small consolidated number) or data-quality issues (like a journal entry with no vendor field populated). Each row states what was observed, why it was flagged, the supporting evidence, and what a reviewer should check. If the review checks ran and found nothing, this tab says so explicitly rather than being silently omitted.
+4. **Exceptions/Review** — items that don't fit neatly into "Findings," such as entity-level offsetting candidates (large postings in different entities that net to a small consolidated number) flagged for review, never asserted as an error. If the checks ran and found nothing, this tab says so explicitly rather than being silently omitted.
 
 ![images](./assets/16.png)
 
 ## How the skill works behind the scenes
 
-**At a high level**, the skill runs a five-stage pipeline: it scopes your ask by clarifying only what's actually missing; connects to whatever data source you have (NetSuite, a shared drive, or a direct upload) and auto-detects its shape rather than requiring configuration; normalizes and validates the data before doing anything with it; builds a plan and pauses for your approval before running the real analysis, always tying findings back to an actual transaction memo instead of inventing an explanation; and finally reconciles its own totals before handing you the workbook, staying available for follow-up questions on the same data. In short — it earns trust at each step (ask before guessing, show the plan before computing, reconcile before delivering) rather than acting as a black box that just returns a number.
+**At a high level:** the first run bootstraps a persistent `allneurons-flux/` folder holding a small configuration UI and a `config.json` file that becomes the single source of truth for accounts, data source, thresholds, and scheduled jobs. Every later run — ad hoc or scheduled — reads that same file, so setup only happens once. An interactive run always shows a plan and waits for your approval before doing any heavy computation; a scheduled run skips that gate because the saved config already represents your sign-off, and always secures a local copy of its output before attempting anything optional like a Share Drive save.
 
 The full step-by-step:
 
-1. **Understand the request.** It reads what you're asking for and only asks clarifying questions about what's genuinely missing — the objective, the scope, the period(s), and entity/segment boundaries.
-2. **Choose and connect the data source.** You pick NetSuite, a shared drive, or a direct file upload. If the relevant connector isn't active, the skill detects that, surfaces a connect link, waits for you to authenticate, and rechecks automatically before continuing.
-3. **Retrieve and discover the data's shape.** Nothing about your chart of accounts, report names, or file layout is hardcoded. For NetSuite, it resolves accounts, periods, subsidiaries, and accounting books at runtime and probes the schema before querying. For a file, it auto-maps the columns (period, account, amount, vendor, memo, currency, entity) by inspecting the headers and sample values, and confirms the mapping with you.
-4. **Validate.** It checks that what it retrieved is actually sufficient to answer your question — the right period, the right fields, non-empty results — and stops to ask rather than guessing if something critical is missing.
-5. **Normalize.** Whatever the source, the data is collapsed into one consistent internal shape (period, account/category, amount, counterparty, memo, entity) so the rest of the analysis works identically regardless of where the data came from.
-6. **Build and present a plan.** Before running anything heavy, it lays out the objective, data source, scope, currency/translation approach, analysis method, and proposed output — for you to approve or adjust. This is a hard review gate; nothing large-scale runs before you sign off.
-7. **Execute the analysis.** It pulls the full data (not a sample), rolls it up by the relevant dimension (e.g. vendor), computes deltas and percentages, and identifies significant movements using the criteria from the plan. Every numeric value is parsed safely to avoid corrupting unusual figures.
-8. **Ground every finding in evidence.** Each flagged item is backed by the actual transaction memo or description that supports it. Findings, interpretations, and review recommendations are kept clearly distinct — an interpretation is never presented as a proven fact, and "no clear driver found in the data" is treated as a valid, honest outcome.
-9. **Build the Excel workbook.** Typically a Summary tab (rolled-up comparison with a formula-based tie-out), a Findings tab (top movers with evidence and review flags), a Detail tab (every underlying transaction line), and an Exceptions/Review tab (anything flagged for human follow-up).
-10. **Verify before handing it over.** The summary total is reconciled against an independently computed control total, row counts and numeric values are sanity-checked, and any known caveat (an FX residual, an excluded book) is named explicitly rather than left as a silent mismatch.
-11. **Present the result.** You get the finished workbook plus a short, plain-language headline of the key findings — and you can keep asking follow-up questions (like "break this down by cost center") against the same data without starting over.
-12. **Offer to save it to OneDrive.** The skill asks for confirmation before saving anything to your shared drive — only once you confirm does it write the workbook to OneDrive/SharePoint; otherwise the file stays in-chat only.
+1. **Locate or create the configuration folder.** If `allneurons-flux/` doesn't exist yet in your connected folder, the skill creates it and writes the configuration page into it.
+2. **Load or build `config.json`.** Missing → walk you through the configuration page and confirm you've saved before continuing. Present → load it, and for an interactive run ask if you'd like to update anything first.
+3. **Resolve run context.** For an ad hoc request, use what you said if it's specific, otherwise fall back to your saved defaults and ask about anything still missing. For a scheduled job, look up that job's id in the freshly-loaded config.
+4. **Connect the data source.** NetSuite, Share Drive/SharePoint, or Manual, per what's configured for this run/job. If a connector isn't live, the skill surfaces a connect link and waits (for an interactive run) or fails that run cleanly with a clear reason (for a scheduled run, since nothing can pause to wait unattended).
+5. **Retrieve, normalize, and validate.** Nothing about your chart of accounts, report names, or file layout is hardcoded — it's discovered at runtime and probed before querying, then collapsed into one consistent shape (period, account, amount, counterparty, memo, entity, currency), checking sufficiency before moving on.
+6. **Run the variance methodology.** Exactly two periods; roll up by the configured dimension; compute Δ($) and Δ(%); flag rows crossing the absolute or percent threshold, new counterparties, and (at consolidated scope) entity-level offsetting candidates.
+7. **Build and present the plan** (interactive) or **proceed directly** (scheduled, since the saved config is the pre-approval).
+8. **Execute and ground every finding** in the actual memo/description that supports it — "no clear driver found in the data" is treated as a valid, honest outcome.
+9. **Build the Excel workbook** — Summary, Findings, Detail, and Exceptions/Review tabs, using formulas rather than hardcoded numbers.
+10. **Verify before delivering** — the rolled-up total is reconciled against an independently computed control total, and any deliberate exclusion or residual is named next to the number.
+11. **Deliver.** Interactive: hand over the file, then ask about an optional OneDrive save. Scheduled: save locally unconditionally, then attempt an optional Share Drive save without blocking on it.
