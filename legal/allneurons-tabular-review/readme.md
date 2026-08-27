@@ -86,13 +86,13 @@ If a file is password-protected, the skill pauses mid-batch and asks for the pas
 
 ![image](./assets/7.png)
 
-*(Link to source)*
+![link to source](https://pragyaallc-my.sharepoint.com/:i:/g/personal/rajat_legalgraph_ai/IQDsWlnQPliDQ7AJvR9FWx_WAaTaqg4vLIDjb65H19rK3IY?e=vfeVp1)
 
 **After**
 
 ![image](./assets/8.png)
 
-*(Link to source)*
+![link to source](https://pragyaallc-my.sharepoint.com/:i:/g/personal/rajat_legalgraph_ai/IQDBQ30aXkQlQKXmA5K0oFFjAVGtTd3SCBfCFW7qp4qOwG8?e=gJv9mk)
 
 ## Output
 
