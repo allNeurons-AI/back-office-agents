@@ -44,15 +44,23 @@ Go to your organization's COI Dashboard link and sign in with your work email an
 3. Enter your password.
 4. Click **Sign In**.
 
+<img width="1000" height="494" alt="image" src="https://github.com/user-attachments/assets/9c3f2b4c-7bb2-40dd-aa93-eb48de280c34" />
+
 > **Tip:** Check "Remember me" if you're on a trusted device so you don't have to log in every time. Use "Forgot Password?" if you need to reset your password.
 
 ## 2. Getting to Know the Dashboard
 
 Once you sign in, you land on the COI Review Dashboard page.
 
+<img width="1000" height="494" alt="image" src="https://github.com/user-attachments/assets/10866d67-b293-48c4-acf7-44fdb7f94cfb" />
+
+
 ### Summary cards
 
 Across the top, five cards give you an instant snapshot of where things stand:
+
+<img width="1299" height="176" alt="image" src="https://github.com/user-attachments/assets/f84a34ce-c708-4505-9c1f-1811da587cfe" />
+
 
 - **Total COI Processed** — the total number of certificates in dashboard.
 - **Accepted** — certificates that meet the acceptable criteria.
@@ -63,6 +71,9 @@ Across the top, five cards give you an instant snapshot of where things stand:
 ### Open tasks
 
 Just below the summary cards, the Open Tasks panel flags the two things most likely to need your attention:
+
+<img width="1299" height="331" alt="image" src="https://github.com/user-attachments/assets/54ae3f51-fa7c-4875-88a4-3501444f4487" />
+
 
 - **Audit Review** — COIs that are pending approval on status (accept/reject) from property admin before AI can send status confirmation to Tenants/Contractors.
 - **Missing Data** — COIs that are missing required information, like a unit number or expiry date.
