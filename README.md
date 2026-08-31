@@ -13,11 +13,11 @@
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-purple?style=flat-square)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-brightgreen?style=flat-square)
 
-A public collection of AI agent skills built by allNeurons for back-office business workflows — organized as domain plugins for Claude Code.
+A collection of production-grade AI agent skills for back-office business workflows — packaged as domain plugins for Claude Code. Install a domain plugin and every skill in that domain activates immediately, no configuration required.
 
-Install a domain plugin and every skill in that domain is ready to use — no setup, no configuration, no copy-pasting prompts. Finance, Legal, HR, Operations, Sales, and Compliance, each as a self-contained plugin you can install in seconds.
+Skills turn raw inputs — GL exports, lease packages, contract PDFs, uploaded files — into structured Excel deliverables: variance workbooks, 20-column CoC extraction tables, citation-backed tabular reviews, and more. Each skill knows when to invoke itself, asks only what it needs, and produces a shareable file at the end.
 
-Every skill here was built for a real customer workflow and is published open-source so anyone can use it, fork it, or build on top of it.
+Covers Finance, Legal, HR, Operations, Sales, and Compliance. Compatible with Claude Code, Claude Cowork, and any agent platform that supports the Agent Skills format.
 
 ## What's here
 
