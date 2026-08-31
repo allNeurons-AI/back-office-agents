@@ -1,12 +1,9 @@
 {
   "name": "legal",
-  "description": "Legal AI skills for contract review, tabular extraction, and M&A diligence. Install to get all Legal skills in one step.",
-  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/legal",
-  "skills": [
-    {
-      "name": "allneurons-tabular-review",
-      "description": "Contract Tabular Review — reads commercial contracts in full and extracts 20 key terms into a citation-backed Excel workbook.",
-      "file": "allneurons-tabular-review/SKILL.md"
-    }
-  ]
+  "description": "Legal AI skills for contract tabular review, M&A diligence, and more. Install to get all Legal skills in one step.",
+  "version": "1.0.0",
+  "author": {
+    "name": "allNeurons-AI"
+  },
+  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/legal"
 }

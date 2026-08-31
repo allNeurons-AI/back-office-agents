@@ -1,8 +1,6 @@
 ---
-name: coc-lease-extraction
-description: Reads a commercial lease package — original lease plus all amendments, riders, and exhibits — and extracts every Change of Control obligation into a structured Excel summary with 20 standardized columns. Scoped specifically to CoC consent, recapture, and transfer-risk provisions.
-trigger: slash-command-only
-slash_command: /coc-lease-extraction
+description: Extracts Change of Control provisions from commercial leases (original lease plus all amendments, exhibits, riders, and ancillary documents) and produces a 20-column Excel summary for M&A diligence. Use when the user uploads a lease or lease package and asks for CoC/transfer/assignment terms, consent requirements, recapture rights, or a diligence matrix. Can be invoked directly via /finance:coc-lease-extraction.
+argument-hint: "[path to lease or lease folder]"
 ---
 
 ## Role

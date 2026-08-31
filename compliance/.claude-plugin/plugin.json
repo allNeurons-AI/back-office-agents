@@ -1,6 +1,9 @@
 {
   "name": "compliance",
   "description": "Compliance AI skills for policy monitoring, audit preparation, and regulatory reporting. More skills coming soon.",
-  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/compliance",
-  "skills": []
+  "version": "1.0.0",
+  "author": {
+    "name": "allNeurons-AI"
+  },
+  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/compliance"
 }

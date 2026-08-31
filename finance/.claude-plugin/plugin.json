@@ -1,17 +1,9 @@
 {
   "name": "finance",
   "description": "Finance AI skills for GL variance analysis, Change of Control lease extraction, and financial operations. Install to get all Finance skills in one step.",
-  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/finance",
-  "skills": [
-    {
-      "name": "allneurons-flux",
-      "description": "GL Account Flux Explainer — explains what drove the change in a GL account between two periods. Outputs a timestamped Excel workbook.",
-      "file": "flux-skill/SKILL.md"
-    },
-    {
-      "name": "coc-lease-extraction",
-      "description": "Change of Control Lease Extraction — extracts every CoC obligation from a commercial lease package into a structured Excel summary with 20 standardized columns.",
-      "file": "lease-extraction-coc/SKILL.md"
-    }
-  ]
+  "version": "1.0.0",
+  "author": {
+    "name": "allNeurons-AI"
+  },
+  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/finance"
 }

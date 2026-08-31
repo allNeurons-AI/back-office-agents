@@ -1,8 +1,6 @@
 ---
-name: allneurons-tabular-review
-description: Reads commercial contracts in full and extracts 20 key terms — parties, term, governing law, assignment, liability, indemnification, and more — into a citation-backed Excel workbook. Every answer is tied to its source section. Includes an optional Change of Control deep-dive via the companion skill allneurons-coc-tabular-review.
-trigger: slash-command-only
-slash_command: /allneurons-tabular-review
+description: Reads commercial contracts in full and extracts 20 key terms (parties, term, governing law, assignment, liability, indemnification, and more) into a citation-backed Excel workbook. Every answer is tied to its source section. Use when the user uploads contracts and asks for a tabular review, key terms extraction, or diligence summary. Can be invoked directly via /legal:allneurons-tabular-review.
+argument-hint: "[contract file or folder]"
 ---
 
 ## Role
