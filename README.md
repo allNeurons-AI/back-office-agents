@@ -8,7 +8,7 @@
 
 ![SkillsMP](https://img.shields.io/badge/SkillsMP-listed-blue?style=flat-square)
 ![ClawHub](https://img.shields.io/badge/ClawHub-listed-orange?style=flat-square)
-![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-purple?style=flat-square)
+![Claude](https://img.shields.io/badge/Claude%20Code-plugin-purple?style=flat-square)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-brightgreen?style=flat-square)
 
 A public collection of AI agent skills built by allNeurons for back-office business workflows organized as domain plugins for Claude.
@@ -17,13 +17,13 @@ A public collection of AI agent skills built by allNeurons for back-office busin
 
 ## What's here
 
-Skills for Finance, Legal, HR, Operations, Sales, and Compliance — published as a Claude Code plugin marketplace. Install a domain plugin to get all its skills in one step.
+Skills for Finance, Legal, HR, Operations, Sales, and Compliance — published as a Claude plugin marketplace. Install a domain plugin to get all its skills in one step.
 
 ---
 
-## Install via Claude Code
+## Install via Claude
 
-Add this marketplace in Claude Code settings (Plugins → Add Marketplace):
+Add this marketplace in Claude settings (Plugins → Add Marketplace):
 
 ```
 https://github.com/allNeurons-AI/back-office-agents.git
@@ -90,7 +90,7 @@ Each domain folder is a self-contained plugin. Adding a new skill means dropping
 
 1. Create `skills/<skill-name>/` inside the relevant domain folder.
 2. Add `SKILL.md` with a `description` frontmatter and the skill instructions.
-3. That's it — Claude Code auto-discovers it the next time the plugin syncs.
+3. That's it — Claude auto-discovers it the next time the plugin syncs.
 
 ```
 finance/
