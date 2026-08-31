@@ -5,19 +5,34 @@
   },
   "plugins": [
     {
-      "name": "allneurons-flux",
-      "description": "Explains what drove the change in a GL account between two periods. Names the vendors, quotes the memos, flags currency and entity issues. Outputs a timestamped Excel workbook.",
-      "source": "./finance/flux-skill"
+      "name": "finance",
+      "description": "Finance AI skills — GL variance analysis, Change of Control lease extraction, and more.",
+      "source": "./finance"
     },
     {
-      "name": "coc-lease-extraction",
-      "description": "Reads a commercial lease package and extracts every Change of Control obligation into a structured Excel summary with 20 standardized columns.",
-      "source": "./finance/lease-extraction-coc"
+      "name": "legal",
+      "description": "Legal AI skills — contract tabular review, M&A diligence, and more.",
+      "source": "./legal"
     },
     {
-      "name": "allneurons-tabular-review",
-      "description": "Reads commercial contracts in full and extracts 20 key terms into a citation-backed Excel workbook with every answer tied to its source section.",
-      "source": "./legal/allneurons-tabular-review"
+      "name": "hr",
+      "description": "HR AI skills — people operations, onboarding, compliance tracking, and more.",
+      "source": "./hr"
+    },
+    {
+      "name": "operations",
+      "description": "Operations AI skills — process automation, vendor management, and more.",
+      "source": "./operations"
+    },
+    {
+      "name": "sales",
+      "description": "Sales AI skills — pipeline management, contract review, and more.",
+      "source": "./sales"
+    },
+    {
+      "name": "compliance",
+      "description": "Compliance AI skills — policy monitoring, audit preparation, and more.",
+      "source": "./compliance"
     }
   ]
 }
