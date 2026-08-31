@@ -1,7 +1,5 @@
 # back-office-agents
 
-![logo](./assets/logo.png)
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/allNeurons-AI/back-office-agents?style=flat-square)](https://github.com/allNeurons-AI/back-office-agents/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/allNeurons-AI/back-office-agents?style=flat-square)](https://github.com/allNeurons-AI/back-office-agents/network)
@@ -13,11 +11,9 @@
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-purple?style=flat-square)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-brightgreen?style=flat-square)
 
-A collection of production-grade AI agent skills for back-office business workflows — packaged as domain plugins for Claude Code. Install a domain plugin and every skill in that domain activates immediately, no configuration required.
+A public collection of AI agent skills built by allNeurons for back-office business workflows — organized as domain plugins for Claude.
 
-Skills turn raw inputs — GL exports, lease packages, contract PDFs, uploaded files — into structured Excel deliverables: variance workbooks, 20-column CoC extraction tables, citation-backed tabular reviews, and more. Each skill knows when to invoke itself, asks only what it needs, and produces a shareable file at the end.
-
-Covers Finance, Legal, HR, Operations, Sales, and Compliance. Compatible with Claude Code, Claude Cowork, and any agent platform that supports the Agent Skills format.
+![logo](./assets/logo.png)
 
 ## What's here
 
