@@ -4,6 +4,7 @@
 
 An allNeurons legal AI skill for Claude — commercial contract tabular review.
 
+
 Companion skill: `allneurons-coc-tabular-review` (Change of Control / Transfer deep-dive)
 
 [Link to diagram](https://pragyaallc-my.sharepoint.com/:i:/g/personal/rajat_legalgraph_ai/IQCBhVCHyYxUTLHY869aKmS-AXsPlhB14WZ-oszqpaHv5AE?e=cMiDmJ)

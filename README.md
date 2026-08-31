@@ -11,7 +11,7 @@
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-purple?style=flat-square)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-brightgreen?style=flat-square)
 
-A public collection of AI agent skills built by allNeurons for back-office business workflows — organized as domain plugins for Claude.
+A public collection of AI agent skills built by allNeurons for back-office business workflows organized as domain plugins for Claude.
 
 ![logo](./assets/logo.png)
 
