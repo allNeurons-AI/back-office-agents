@@ -2,6 +2,17 @@
 
 ![logo](./assets/logo.png)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/allNeurons-AI/back-office-agents?style=flat-square)](https://github.com/allNeurons-AI/back-office-agents/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/allNeurons-AI/back-office-agents?style=flat-square)](https://github.com/allNeurons-AI/back-office-agents/network)
+[![GitHub release](https://img.shields.io/github/v/release/allNeurons-AI/back-office-agents?style=flat-square)](https://github.com/allNeurons-AI/back-office-agents/releases)
+[![Last commit](https://img.shields.io/github/last-commit/allNeurons-AI/back-office-agents?style=flat-square&color=brightgreen)](https://github.com/allNeurons-AI/back-office-agents/commits/main)
+
+![SkillsMP](https://img.shields.io/badge/SkillsMP-listed-blue?style=flat-square)
+![ClawHub](https://img.shields.io/badge/ClawHub-listed-orange?style=flat-square)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-purple?style=flat-square)
+![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-brightgreen?style=flat-square)
+
 A public collection of AI agent skills built by allNeurons for back-office business workflows — organized as domain plugins for Claude Code.
 
 ## What's here
