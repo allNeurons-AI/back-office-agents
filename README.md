@@ -15,6 +15,10 @@
 
 A public collection of AI agent skills built by allNeurons for back-office business workflows — organized as domain plugins for Claude Code.
 
+Install a domain plugin and every skill in that domain is ready to use — no setup, no configuration, no copy-pasting prompts. Finance, Legal, HR, Operations, Sales, and Compliance, each as a self-contained plugin you can install in seconds.
+
+Every skill here was built for a real customer workflow and is published open-source so anyone can use it, fork it, or build on top of it.
+
 ## What's here
 
 Skills for Finance, Legal, HR, Operations, Sales, and Compliance — published as a Claude Code plugin marketplace. Install a domain plugin to get all its skills in one step.
