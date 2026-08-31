@@ -1,37 +1,23 @@
 {
   "name": "back-office-agents",
-  "publisher": "allNeurons-AI",
-  "description": "A collection of AI agent skills for back-office business workflows",
-  "homepage": "https://github.com/allNeurons-AI/back-office-agents",
-  "repository": "https://github.com/allNeurons-AI/back-office-agents.git",
-  "version": "1.0.0",
+  "owner": {
+    "name": "allNeurons-AI"
+  },
   "plugins": [
     {
-      "id": "allneurons-flux",
-      "name": "GL Account Flux Explainer",
-      "command": "/allneurons-flux",
-      "description": "Explains what drove the change in a GL account between two periods. Names the vendors, quotes the memos, flags currency and entity issues. Runs on a schedule or on demand. Delivers a timestamped Excel workbook.",
-      "tags": ["finance", "accounting", "variance-analysis", "netsuite", "excel"],
-      "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/finance/flux-skill",
-      "skillPath": "finance/flux-skill/skill-file/skill.md"
+      "name": "allneurons-flux",
+      "description": "Explains what drove the change in a GL account between two periods. Names the vendors, quotes the memos, flags currency and entity issues. Outputs a timestamped Excel workbook.",
+      "source": "./finance/flux-skill"
     },
     {
-      "id": "coc-lease-extraction",
-      "name": "Change of Control Lease Extraction",
-      "command": "/coc-lease-extraction",
-      "description": "Reads a commercial lease package and extracts every Change of Control obligation — consent requirements, recapture rights, termination triggers, permitted transfers, fees — into a structured Excel summary with 20 standardized columns.",
-      "tags": ["finance", "legal", "lease", "M&A", "change-of-control", "real-estate"],
-      "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/finance/lease-extraction-coc",
-      "skillPath": "finance/lease-extraction-coc/README.md"
+      "name": "coc-lease-extraction",
+      "description": "Reads a commercial lease package and extracts every Change of Control obligation into a structured Excel summary with 20 standardized columns.",
+      "source": "./finance/lease-extraction-coc"
     },
     {
-      "id": "allneurons-tabular-review",
-      "name": "Contract Tabular Review",
-      "command": "/allneurons-tabular-review",
-      "description": "Reads commercial contracts in full and extracts 20 key terms into a citation-backed Excel workbook. Every answer is tied to its source section. Includes an optional Change of Control deep-dive via the companion skill.",
-      "tags": ["legal", "contracts", "diligence", "M&A", "review", "abstraction"],
-      "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/legal/allneurons-tabular-review",
-      "skillPath": "legal/allneurons-tabular-review/readme.md"
+      "name": "allneurons-tabular-review",
+      "description": "Reads commercial contracts in full and extracts 20 key terms into a citation-backed Excel workbook with every answer tied to its source section.",
+      "source": "./legal/allneurons-tabular-review"
     }
   ]
 }
