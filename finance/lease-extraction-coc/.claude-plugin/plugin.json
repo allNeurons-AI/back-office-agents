@@ -6,7 +6,7 @@
   "skills": [
     {
       "name": "coc-lease-extraction",
-      "file": "skills/coc-lease-extraction/SKILL.md"
+      "file": "SKILL.md"
     }
   ]
 }
