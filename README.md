@@ -107,4 +107,6 @@ The skill becomes available as `/finance:my-new-skill` after install.
 
 [allNeurons](https://allneurons.ai) designs and deploys AI agent skills for enterprise back-office workflows. Every skill we build for a client gets published here so the broader community can benefit.
 
+[Contact us](https://allneurons.ai/#contact/US) to build custom skills for your team.
+
 Open-sourced for the community.
