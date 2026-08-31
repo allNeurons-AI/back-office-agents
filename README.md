@@ -1,90 +1,99 @@
-# back-office-agentskills
+# back-office-agents
 
 ![logo](./assets/logo.png)
 
-A public collection of reusable AI agent skills built by Allneurons for back-office business workflows.
+A public collection of AI agent skills built by allNeurons for back-office business workflows — organized as domain plugins for Claude Code.
 
-## Objective
+## What's here
 
-We build AI agent skills for our customers every day — and we're making all of them public.
-
-This repository is where we publish every skill we create for clients across Finance, HR, Legal, Operations, Sales, Procurement, and more. If we built it for a customer, it ends up here — open and available for anyone to use, adapt, and build on.
-
-## Quick install — get all skills at once
-
-Install the [marketplace skill](./marketplace/README.md) and type `/allneurons` in any Claude chat. It shows every skill in this collection, lets you browse by department, and walks you through installing any of them — without leaving your session.
-
-```
-/allneurons                            → browse the full catalog
-/allneurons install flux               → install a specific skill
-/allneurons about coc-lease-extraction → learn more before installing
-```
-
-Or install individual skills directly — each skill folder has its own install guide.
+Skills for Finance, Legal, HR, Operations, Sales, and Compliance — published as a Claude Code plugin marketplace. Install a domain plugin to get all its skills in one step.
 
 ---
 
-## Getting Started
+## Install via Claude Code
 
-1. Install the [marketplace skill](./marketplace/README.md) to browse and install everything from inside Claude.
-2. Or navigate directly to the relevant department folder and follow the install guide in that skill's README.
-3. For shared utilities and common helpers, check the `shared/` directory first.
-
----
-
-## Folder Structure
-
-| Folder | Description |
-|---|---|
-| `marketplace/` | The `/allneurons` marketplace skill — install this to browse and install all other skills |
-| `_templates/` | Scaffold for creating a new skill — copy this when building a new plugin |
-| `foundation/` | Guides for setting up and using skills in Claude |
-| `finance/` | Financial workflows — reporting, reconciliation, budgeting |
-| `compliance/` | Compliance workflows — COI tracking, certificate review |
-| `hr/` | HR processes — onboarding, payroll, performance reviews |
-| `legal/` | Legal workflows — contract review, document management |
-| `operations/` | Operational automation — logistics, facilities, support |
-| `sales/` | Sales workflows — CRM, pipeline, outreach |
-| `procurement/` | Procurement — vendor management, purchase orders |
-| `shared/` | Shared utilities and skills used across departments |
-
-### Skill folder layout
-
-Every skill lives in its department folder and follows this structure:
+Add this marketplace in Claude Code settings (Plugins → Add Marketplace):
 
 ```
-department/
-└── skill-name/
-    ├── README.md       # What the skill does, how to install, how to use
-    ├── skill.md        # The skill definition — system prompt and instructions
-    └── assets/         # Screenshots and images used in the README
+https://github.com/allNeurons-AI/back-office-agents.git
 ```
 
-Some skills also include a `sample-data/` folder with example input files you can use to try the skill before running it on your own data.
+Then install any domain plugin to get its skills. Skills are namespaced by domain:
 
-## Creating a new skill
-
-1. Copy `_templates/skill-template/` into the relevant department folder and rename it.
-2. Fill in `skill.md` with your skill's instructions, role, and output definition.
-3. Fill in `README.md` using the template — document prerequisites, install steps, usage, and output.
-4. Add screenshots to `assets/` as you build.
-5. Add an entry to `marketplace/registry.json` so the skill appears in the `/allneurons` catalog.
-6. Package the skill and link the download in the README once it's ready to publish.
-
-## Contributing
-
-Skills are added as we build them for customers. Each skill is self-contained and documented so it can be dropped into any compatible agent setup. Add new skills under the appropriate domain folder. If a skill is reusable across multiple domains, place it in `shared/`.
+| Plugin | Skills installed | Commands |
+|---|---|---|
+| **Finance** | GL Flux Explainer, CoC Lease Extraction | `/finance:allneurons-flux`, `/finance:coc-lease-extraction` |
+| **Legal** | Contract Tabular Review | `/legal:allneurons-tabular-review` |
+| **HR** | *(coming soon)* | — |
+| **Operations** | *(coming soon)* | — |
+| **Sales** | *(coming soon)* | — |
+| **Compliance** | *(coming soon)* | — |
 
 ---
 
-## About All Neurons
+## Skills
 
-[All Neurons](https://allneurons.ai) helps enterprises **transform AI spend into measurable business outcomes**.
+### Finance
 
-We design and deploy AI agent skills tailored to real back-office workflows — the kind that reduce manual work, eliminate bottlenecks, and generate results you can actually measure. This repository is a direct reflection of that work: every skill we build for a client gets published here so the broader community can benefit.
+**`/finance:allneurons-flux`** — GL Account Flux Explainer  
+Explains what drove the change in a GL account between two periods. Names the vendors, quotes the memos, flags currency and entity issues. Connects to NetSuite, Share Drive/SharePoint, or a file you provide. Delivers a timestamped Excel workbook (Summary, Flux, GL Details tabs).
 
-Learn more at [allneurons.ai](https://allneurons.ai).
+**`/finance:coc-lease-extraction`** — Change of Control Lease Extraction  
+Reads a commercial lease package (original lease + all amendments, riders, and exhibits) and extracts every Change of Control obligation into a structured Excel summary with 20 standardized columns. Tested at 86% extraction accuracy on hard clauses like consent-to-transfer and take-private provisions.
+
+### Legal
+
+**`/legal:allneurons-tabular-review`** — Contract Tabular Review  
+Reads commercial contracts in full and extracts 20 key terms (parties, term, governing law, assignment, liability, indemnification, and more) into a citation-backed Excel workbook. Every answer is tied to its source section. Includes an optional Change of Control deep-dive.
 
 ---
+
+## Repository structure
+
+```
+.claude-plugin/
+└── marketplace.json          ← marketplace manifest (6 domain plugins)
+
+finance/
+├── .claude-plugin/plugin.json
+└── skills/
+    ├── allneurons-flux/SKILL.md
+    └── coc-lease-extraction/SKILL.md
+
+legal/
+├── .claude-plugin/plugin.json
+└── skills/
+    └── allneurons-tabular-review/SKILL.md
+
+hr/                           ← .claude-plugin/plugin.json (skills coming soon)
+operations/                   ← .claude-plugin/plugin.json (skills coming soon)
+sales/                        ← .claude-plugin/plugin.json (skills coming soon)
+compliance/                   ← .claude-plugin/plugin.json (skills coming soon)
+```
+
+Each domain folder is a self-contained plugin. Adding a new skill means dropping a `skills/<skill-name>/SKILL.md` file into the right domain folder — no marketplace changes needed.
+
+---
+
+## Adding a new skill
+
+1. Create `skills/<skill-name>/` inside the relevant domain folder.
+2. Add `SKILL.md` with a `description` frontmatter and the skill instructions.
+3. That's it — Claude Code auto-discovers it the next time the plugin syncs.
+
+```
+finance/
+└── skills/
+    └── my-new-skill/
+        └── SKILL.md          ← description: frontmatter + skill instructions
+```
+
+The skill becomes available as `/finance:my-new-skill` after install.
+
+---
+
+## About allNeurons
+
+[allNeurons](https://allneurons.ai) designs and deploys AI agent skills for enterprise back-office workflows. Every skill we build for a client gets published here so the broader community can benefit.
 
 Open-sourced for the community.
