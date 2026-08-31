@@ -2,5 +2,11 @@
   "name": "coc-lease-extraction",
   "description": "Reads a commercial lease package and extracts every Change of Control obligation into a structured Excel summary with 20 standardized columns.",
   "command": "/coc-lease-extraction",
-  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/finance/lease-extraction-coc"
+  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/finance/lease-extraction-coc",
+  "skills": [
+    {
+      "name": "coc-lease-extraction",
+      "file": "skills/coc-lease-extraction/SKILL.md"
+    }
+  ]
 }

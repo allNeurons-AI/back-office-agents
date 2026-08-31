@@ -2,5 +2,11 @@
   "name": "allneurons-tabular-review",
   "description": "Reads commercial contracts in full and extracts 20 key terms into a citation-backed Excel workbook with every answer tied to its source section.",
   "command": "/allneurons-tabular-review",
-  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/legal/allneurons-tabular-review"
+  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/legal/allneurons-tabular-review",
+  "skills": [
+    {
+      "name": "allneurons-tabular-review",
+      "file": "skills/allneurons-tabular-review/SKILL.md"
+    }
+  ]
 }

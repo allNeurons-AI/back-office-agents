@@ -2,6 +2,11 @@
   "name": "allneurons-flux",
   "description": "Explains what drove the change in a GL account between two periods. Names the vendors, quotes the memos, flags currency and entity issues. Outputs a timestamped Excel workbook.",
   "command": "/allneurons-flux",
-  "skillFile": "skill-file/skill.md",
-  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/finance/flux-skill"
+  "homepage": "https://github.com/allNeurons-AI/back-office-agents/tree/main/finance/flux-skill",
+  "skills": [
+    {
+      "name": "allneurons-flux",
+      "file": "skill-file/skill.md"
+    }
+  ]
 }
