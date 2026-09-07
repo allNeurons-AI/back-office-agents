@@ -33,6 +33,11 @@
       "name": "compliance",
       "description": "Compliance AI skills — policy monitoring, audit preparation, and more.",
       "source": "./compliance"
+    },
+    {
+      "name": "productivity",
+      "description": "Productivity AI skills — daily briefing, call prep, follow-up tracking, learning plans, and competitive intelligence.",
+      "source": "./productivity"
     }
   ]
 }
