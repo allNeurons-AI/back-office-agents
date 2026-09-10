@@ -9,6 +9,7 @@ At All Neurons, we build legal skills that handle the repetitive, high-volume re
 | Skill | Description |
 |---|---|
 | [Tabular Review](./allneurons-tabular-review/readme.md) | Reads commercial contracts and extracts 20 key terms into a citation-backed Excel workbook. Includes an optional Change of Control deep-dive (`allneurons-coc-tabular-review`). |
+| [Agiloft Dashboards](./skills/agiloft-dashboards/README.md) | Answers Agiloft contract questions in plain language and keeps a live four-tab dashboard open beside the chat. Read-only, and designed to work with any Agiloft CLM knowledgebase — field names and status values are discovered at runtime. |
 
 ---
 
