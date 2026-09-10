@@ -34,7 +34,7 @@ Then install any domain plugin to get its skills. Skills are namespaced by domai
 | Plugin | Skills installed | Commands |
 |---|---|---|
 | **Finance** | GL Flux Explainer, CoC Lease Extraction | `/finance:allneurons-flux`, `/finance:coc-lease-extraction` |
-| **Legal** | Contract Tabular Review | `/legal:allneurons-tabular-review` |
+| **Legal** | Contract Tabular Review, Agiloft Dashboards | `/legal:allneurons-tabular-review`, `/legal:agiloft-dashboards` |
 | **HR** | *(coming soon)* | — |
 | **Operations** | *(coming soon)* | — |
 | **Sales** | *(coming soon)* | — |
@@ -56,6 +56,9 @@ Reads a commercial lease package (original lease + all amendments, riders, and e
 
 **`/legal:allneurons-tabular-review`** — Contract Tabular Review  
 Reads commercial contracts in full and extracts 20 key terms (parties, term, governing law, assignment, liability, indemnification, and more) into a citation-backed Excel workbook. Every answer is tied to its source section. Includes an optional Change of Control deep-dive.
+
+**`/legal:agiloft-dashboards`** — Agiloft Contract Dashboards  
+Answers contract questions from an Agiloft CLM knowledgebase in plain language and keeps a live four-tab dashboard (Contract Reporting, Contract Requester, Cycle Times, Vendor Management) open beside the chat. Every figure carries the query that produced it. Reads through an existing Agiloft MCP connector and never writes; field names and status values are discovered at runtime. Pre-release: validated against synthetic knowledgebases (185 checks), not yet against a live Agiloft instance.
 
 ---
 
