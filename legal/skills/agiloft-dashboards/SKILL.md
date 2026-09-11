@@ -453,7 +453,7 @@ The honest answer depends on what you can reach - the three levels above.
   provides, term, value, key obligations, how it ends.
 - **If you only have the record fields**, say that plainly and summarize those:
   "A Vendor Agreement with NXGN, signed 30 September 2026, running to 29
-  September 2027, owned by Juraj Kosik. That is everything the contract record
+  September 2027, owned by D. Rossi. That is everything the contract record
   holds - the scope and commercial terms are in the signed document, which this
   knowledgebase does not extract into fields."
 
