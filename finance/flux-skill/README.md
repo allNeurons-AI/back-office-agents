@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-- [Download the skill](https://pragyaallc-my.sharepoint.com/:u:/g/personal/sachin_parmar_legalgraph_ai/IQBaIWNHWGd6Q4HzYfLPJuAnAWCsTCgcPlX977v4axrbP40?e=KrKVcH)
+- [Download the skill](https://pragyaallc-my.sharepoint.com/:u:/g/personal/sachin_parmar_legalgraph_ai/IQAoy3wGtuGhSqZKXyUlnvdhAS0pQGsYXWa2TUJ_X3m16KI?e=SaFjgN)
 - [Don't know how to add a skill in Claude? Click here](../../foundation/setup-skill-in-claude/readme.md)
 - **A persistent, user-visible folder connected** (Share Drive/SharePoint or another synced location). The skill keeps a small `allneurons-flux/` configuration folder there so your setup survives across sessions and scheduled runs — it can't be a temporary chat scratch space.
 
