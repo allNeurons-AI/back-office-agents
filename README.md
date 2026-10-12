@@ -33,7 +33,7 @@ Then install any domain plugin to get its skills. Skills are namespaced by domai
 
 | Plugin | Skills installed | Commands |
 |---|---|---|
-| **Finance** | GL Flux Explainer, CoC Lease Extraction | `/finance:allneurons-flux`, `/finance:coc-lease-extraction` |
+| **Finance** | GL Flux Explainer, CoC Lease Extraction, Daily Close TB Roll-Forward | `/finance:allneurons-flux`, `/finance:coc-lease-extraction`, `/finance:tb-rollforward` |
 | **Legal** | Contract Tabular Review | `/legal:allneurons-tabular-review` |
 | **HR** | *(coming soon)* | — |
 | **Operations** | *(coming soon)* | — |
@@ -52,6 +52,9 @@ Explains what drove the change in a GL account between two periods. Names the ve
 **`/finance:coc-lease-extraction`** — Change of Control Lease Extraction  
 Reads a commercial lease package (original lease + all amendments, riders, and exhibits) and extracts every Change of Control obligation into a structured Excel summary with 20 standardized columns. Tested at 86% extraction accuracy on hard clauses like consent-to-transfer and take-private provisions.
 
+**`/finance:tb-rollforward`** — Daily Close Trial Balance Roll-Forward  
+Keeps a trial balance for every legal entity, plus consolidated and roll-up views, current each day in one reporting currency. Saves a locked month-end baseline, reads only what changed, writes a dated Excel workbook, and emails a summary. Runs on a daily schedule so the close is always current. Connects to NetSuite or Excel/CSV files in SharePoint/OneDrive.
+
 ### Legal
 
 **`/legal:allneurons-tabular-review`** — Contract Tabular Review  
@@ -69,7 +72,8 @@ finance/
 ├── .claude-plugin/plugin.json
 └── skills/
     ├── allneurons-flux/SKILL.md
-    └── coc-lease-extraction/SKILL.md
+    ├── coc-lease-extraction/SKILL.md
+    └── tb-rollforward/          ← SKILL.md + Reference/, adapters/, forms/, templates/
 
 legal/
 ├── .claude-plugin/plugin.json
