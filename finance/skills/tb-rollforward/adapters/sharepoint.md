@@ -22,6 +22,13 @@ Use only when the user cannot sync the library. Connector tool names differ, so 
 `ToolSearch` for `sharepoint`, `onedrive`, `microsoft 365`. If nothing is found, stop and tell the user to either
 connect Microsoft 365 or switch to Mode A (use `suggest_connectors`).
 
+`paths` keeps the SharePoint/OneDrive locations (URL or `folder/subfolder`). In connector mode the engine does NOT look
+for them on disk; it reads only `STORE/.state/inbox/<dataset>/`, where you put the downloads. Address a OneDrive
+location with `read_resource` as `file:///{driveId}/{folder path}` (list the drive root first with
+`drive:///users/me`); folder item ids in listings run into the next name, so prefer paths over copied ids.
+If the connector returns a workbook as text rather than bytes, do not fake it: use Mode A, or tell the user the file
+has to be placed in the inbox another way.
+
 For each configured path (SharePoint URL or `site/library/folder`):
 1. List the folder; keep `.xlsx/.xlsm/.csv` only; apply the dataset's `pattern` if set.
 2. Download each file and write the bytes to `STORE/.state/inbox/<dataset>/<same file name>`

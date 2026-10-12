@@ -538,7 +538,10 @@ def list_files(dataset, cfg, store, pathmap, errs):
     pats = ds.get("pattern") or []
     if isinstance(pats, str):
         pats = [x.strip() for x in pats.split(",") if x.strip()]
-    roots = [(p, resolve_path(p, store, pathmap)) for p in ds.get("paths", [])]
+    # connector mode: "paths" holds SharePoint/OneDrive locations that the agent downloads into .state/inbox/<dataset>/.
+    # They are not local folders, so only the inbox is read (no path_not_found).
+    local_paths = [] if ds.get("mode") == "connector" else ds.get("paths", [])
+    roots = [(p, resolve_path(p, store, pathmap)) for p in local_paths]
     roots.append(("inbox", os.path.join(store, ".state", "inbox", dataset)))
     found = []
     for label, root in roots:

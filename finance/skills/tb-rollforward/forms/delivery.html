@@ -28,11 +28,23 @@
       </div>
     </div>
     <div class="elicit-group">
-      <label class="elicit-question">Attach the Excel file to the email? (small files only; otherwise the email says where it is saved)</label>
+      <label class="elicit-question">Attach the Excel file to the email? (Gmail only. Outlook cannot attach files here, so the email carries a link instead)</label>
       <div class="elicit-pills" data-name="attach" data-multi="false">
         <button type="button" class="elicit-pill" data-value="No">No</button>
         <button type="button" class="elicit-pill" data-value="Yes">Yes</button>
       </div>
+    </div>
+    <div class="elicit-group">
+      <label class="elicit-question">Save each run's files to a cloud drive? I create a dated folder first, put every file inside it, and the email links to it.</label>
+      <div class="elicit-pills" data-name="save_to_drive" data-multi="false">
+        <button type="button" class="elicit-pill" data-value="No">No</button>
+        <button type="button" class="elicit-pill" data-value="SharePoint / OneDrive">SharePoint / OneDrive</button>
+        <button type="button" class="elicit-pill" data-value="Google Drive">Google Drive</button>
+      </div>
+    </div>
+    <div class="elicit-group">
+      <label class="elicit-question">Which drive folder should the dated folders go inside? (leave empty for the top level; skip if you said No above)</label>
+      <textarea class="elicit-textarea" data-name="drive_parent" placeholder="e.g. Finance/Trial balance"></textarea>
     </div>
     <div class="elicit-group">
       <label class="elicit-question">Send an email even when nothing changed since the last run?</label>

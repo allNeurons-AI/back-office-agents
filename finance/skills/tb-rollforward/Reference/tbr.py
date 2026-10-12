@@ -13,6 +13,9 @@
   run             --store S --mode manual|scheduled [--force] [--accept-removed]
   ns-diff         --store S --controls controls.csv        (NetSuite source) which entity-periods need re-pulling
   email-sent      --store S --status sent|failed [--error TEXT]
+  email-add-link  --store S --url URL [--label TEXT] [--folder-url URL]   add the workbook / drive-folder link to the pending email
+  drive-plan      --store S                       dated folder name + every file of the latest run to upload (save-to-drive)
+  preflight       --store S [--need a,b,c]        which connectors this setup/run needs (agent must verify each one)
   restore-previous --store S
   status          --store S
 Exit code 0 = ok / nothing to do, 2 = failed (details in JSON).
@@ -58,6 +61,7 @@ DEFAULT_CFG = {
     },
     "email": {"provider": "gmail", "to": [], "cc": [], "attach_workbook": False, "include_numbers": True,
               "notify_no_change": True, "subject": DEFAULT_SUBJECT},
+    "drive": {"provider": "none", "parent": "", "folder_pattern": "TB Rollforward {date}"},
     "schedule": {"time": "08:00", "days": "weekdays", "task_id": "tb-rollforward-daily", "created": False},
     "baseline": {"keep_previous": 1},
     "netsuite": {"subsidiaries": [], "accounting_book": 1, "root_subsidiary": 1},
@@ -121,6 +125,9 @@ def validate_config(cfg):
         for a in em.get("to", []) + em.get("cc", []):
             if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", a):
                 errs.append("invalid email address: %s" % a)
+    dv = cfg.get("drive", {})
+    if dv.get("provider", "none") not in ("none", "sharepoint", "onedrive", "gdrive"):
+        errs.append("drive.provider must be none, sharepoint, onedrive or gdrive")
     return errs
 
 
@@ -210,6 +217,31 @@ def render(tpl, vals):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: html.escape(str(vals.get(m.group(1), ""))), tpl)
 
 
+def outlook_safe_html(vals, info, cfg):
+    """Plain HTML that survives Outlook's sanitiser (allowed: p, br, b, ul, li, a, table/tr/td, h-tags; stripped: style, span, img, div)."""
+    e = html.escape
+    parts = ["<p><b>%s</b> - %s trial balance by entity</p>" % (e(vals["status_word"]), e(vals["company"])),
+             "<p>%s</p>" % e(vals["headline_text"])]
+    t = info.get("totals")
+    if t and cfg["email"].get("include_numbers", True):
+        rep = cfg["reporting_currency"]
+        parts.append("<table>" + "".join('<tr><td>%s</td><td align="right"><b>%s %s</b></td></tr>' % (k, num(v), rep) for k, v in (
+            ("Total assets", t["assets"]), ("Total liabilities", t["liabilities"]),
+            ("Total equity", t["equity"]), ("Net income (profit +)", t["net_income"]))) + "</table>")
+    if info.get("warnings"):
+        parts.append("<p><b>Please check</b></p><ul>" + "".join("<li>%s</li>" % e(w) for w in info["warnings"][:10]) + "</ul>")
+    if info["status"] == "FAILED":
+        det = "".join("<li>%s</li>" % e(("%s: %s" % (d.get("file", ""), d.get("detail", ""))) if isinstance(d, dict) else str(d))
+                      for d in info.get("details", [])[:12])
+        parts.append("<p><b>What went wrong (step: %s)</b><br>%s</p><ul>%s</ul><p>Nothing was overwritten. The next run will try again.</p>" % (
+            e(info.get("step", "") or ""), e(info.get("message", "") or ""), det))
+    parts.append("<p>Run: %s - %s<br>Period: %s (%s)<br>Saved to: %s<br>Last good run: %s<br>Next scheduled run: %s</p>" % (
+        e(vals["run_type"]), e(vals["run_time"]), e(vals["period"]), e(vals["basis"]), e(vals["output_path"]),
+        e(vals["last_success"]), e(vals["next_run"])))
+    parts.append("<!--LINKS-->")
+    return "\n".join(parts)
+
+
 def num(x):
     return "{:,.0f}".format(x)
 
@@ -264,6 +296,9 @@ def build_email(store, cfg, info):
         text += "Error (%s): %s\n" % (info.get("step"), info.get("message"))
     payload = {"provider": em.get("provider"), "to": em.get("to", []), "cc": em.get("cc", []), "subject": subj,
                "html": render(tpl, vals), "text": text, "attach": [], "payload_file": os.path.join(store, ".state", "email_payload.json")}
+    payload["outlook_html"] = outlook_safe_html(vals, info, cfg)
+    payload["outlook_body_type"] = "html"
+    payload["links"] = []
     if em.get("attach_workbook") and info.get("output_file") and os.path.getsize(info["output_file"]) < 15 * 1024 * 1024:
         payload["attach"] = [info["output_file"]]
     json.dump(payload, open(payload["payload_file"], "w"))
@@ -362,6 +397,9 @@ def answers_to_cfg(form, a):
                         "include_numbers": str(g("include_numbers", "Yes")).lower().startswith("y"),
                         "attach_workbook": str(g("attach", "No")).lower().startswith("y"),
                         "notify_no_change": str(g("notify_no_change", "Yes")).lower().startswith("y")}
+        sd = str(g("save_to_drive", "No")).lower()
+        prov = "gdrive" if "google" in sd else ("sharepoint" if ("sharepoint" in sd or "onedrive" in sd) else "none")
+        new["drive"] = {"provider": prov, "parent": str(g("drive_parent", "")).strip(), "folder_pattern": "TB Rollforward {date}"}
         rt = str(g("run_time", "08:00")).strip()
         m = re.match(r"^(\d{1,2})[:.]?(\d{2})?", rt)
         hh, mm = (int(m.group(1)), int(m.group(2) or 0)) if m else (8, 0)
@@ -809,6 +847,83 @@ def cmd_email_sent(a):
     out({"status": "ok"})
 
 
+def cmd_email_add_link(a):
+    """Insert the workbook / drive-folder link(s) into the pending email (all body variants), before it is sent."""
+    pf = os.path.join(a.store, ".state", "email_payload.json")
+    if not os.path.exists(pf):
+        raise RunError("email", "no email payload to add a link to (run first)")
+    p = json.load(open(pf))
+    label = a.label or "Trial balance workbook"
+    e = html.escape
+    link_html = '<p>%s: <a href="%s">%s</a></p>' % (e(label), e(a.url, quote=True), e(a.url))
+    link_text = "%s: %s\n" % (label, a.url)
+    if a.folder_url:
+        link_html += '<p>All files (folder): <a href="%s">%s</a></p>' % (e(a.folder_url, quote=True), e(a.folder_url))
+        link_text += "All files (folder): %s\n" % a.folder_url
+    p["links"] = p.get("links", []) + [{"label": label, "url": a.url, "folder_url": a.folder_url}]
+    for k in ("html", "outlook_html"):
+        if "<!--LINKS-->" in p.get(k, ""):
+            p[k] = p[k].replace("<!--LINKS-->", link_html + "<!--LINKS-->")
+        else:
+            p[k] = p.get(k, "") + link_html
+    p["text"] = p["text"] + link_text
+    json.dump(p, open(pf, "w"))
+    out({"status": "ok", "email": p})
+
+
+def cmd_drive_plan(a):
+    cfg = load_config(a.store)
+    dv = cfg.get("drive", {})
+    ls = os.path.join(a.store, ".state", "last_success.json")
+    if not os.path.exists(ls):
+        raise RunError("drive", "no successful run yet - nothing to save")
+    last = json.load(open(ls))
+    day_dir = os.path.dirname(os.path.join(a.store, last["output_path"]))
+    day = os.path.basename(day_dir)
+    name = (dv.get("folder_pattern") or "TB Rollforward {date}").replace("{date}", day).replace("{company}", cfg.get("company_name", ""))
+    files = [os.path.abspath(os.path.join(day_dir, f)) for f in sorted(os.listdir(day_dir)) if f.lower().endswith(".xlsx") and not f.startswith("~")]
+    out({"status": "ok", "provider": dv.get("provider", "none"), "parent": dv.get("parent", ""), "folder_name": name,
+         "files": files, "mime": {"xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+         "steps": ["1 create the folder first (parent above)", "2 upload every file into that folder", "3 get the folder link and the workbook link",
+                   "4 tbr.py email-add-link --url <workbook link> --folder-url <folder link>", "5 send the email"]})
+
+
+CONNECTOR_PROBES = {
+    "microsoft365": {"name": "Microsoft 365 (SharePoint / OneDrive / Outlook)", "probe": "get_me, then read_resource drive:///users/me", "search": ["microsoft 365", "outlook", "sharepoint"]},
+    "gmail": {"name": "Gmail", "probe": "list labels", "search": ["gmail", "google mail"]},
+    "gdrive": {"name": "Google Drive", "probe": "list_recent_files (limit 1)", "search": ["google drive", "drive"]},
+    "netsuite": {"name": "NetSuite", "probe": "SuiteQL: SELECT id FROM subsidiary WHERE id = 1", "search": ["netsuite"]},
+}
+
+
+def cmd_preflight(a):
+    need = set(x.strip() for x in (a.need or "").split(",") if x.strip())
+    p = os.path.join(a.store, "config.json")
+    if os.path.exists(p):
+        cfg = json.load(open(p))
+        src = cfg.get("sources", {})
+        for ds, v in src.items():
+            if v.get("type") == "netsuite":
+                need.add("netsuite")
+            if v.get("type", "files") == "files" and v.get("mode") == "connector":
+                need.add("microsoft365")
+        pv = cfg.get("email", {}).get("provider")
+        if pv == "outlook":
+            need.add("microsoft365")
+        if pv == "gmail":
+            need.add("gmail")
+        dp = cfg.get("drive", {}).get("provider", "none")
+        if dp in ("sharepoint", "onedrive"):
+            need.add("microsoft365")
+        if dp == "gdrive":
+            need.add("gdrive")
+    bad = [n for n in need if n not in CONNECTOR_PROBES]
+    if bad:
+        raise RunError("preflight", "unknown connector key(s): %s" % ", ".join(bad))
+    out({"status": "ok", "required": [dict(key=k, **CONNECTOR_PROBES[k]) for k in sorted(need)],
+         "rule": "every required connector must answer its probe with real data; otherwise stop, search the registry, suggest_connectors and wait"})
+
+
 def cmd_restore_previous(a):
     d = os.path.join(a.store, "Baseline")
     prev = sorted(glob.glob(os.path.join(d, "_previous", "baseline_????-??.json")))
@@ -856,6 +971,9 @@ def main():
         ("--force", dict(action="store_true")), ("--accept-removed", dict(action="store_true")))
     add("ns-diff", cmd_ns_diff, ("--controls", dict(required=True)))
     add("email-sent", cmd_email_sent, ("--status", dict(required=True, choices=["sent", "failed"])), ("--error", dict(default="")))
+    add("email-add-link", cmd_email_add_link, ("--url", dict(required=True)), ("--label", dict(default="")), ("--folder-url", dict(default="")))
+    add("drive-plan", cmd_drive_plan)
+    add("preflight", cmd_preflight, ("--need", dict(default="")))
     add("restore-previous", cmd_restore_previous)
     add("status", cmd_status)
     a = ap.parse_args()
