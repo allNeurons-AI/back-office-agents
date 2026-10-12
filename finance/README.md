@@ -16,6 +16,7 @@ These skills are built for the people doing the actual work: FP&A analysts, cont
 |---|---|
 | [GL Account Flux Explainer](./flux-skill/README.md) | Explains what drove the change in a GL account between two periods — straight from a spreadsheet export. Names the vendors, quotes the memos, flags currency and entity issues. |
 | [Change of Control Lease Extraction](./lease-extraction-coc/README.md) | Reads a commercial lease package and extracts every Change of Control obligation into a structured Excel summary — consent requirements, termination triggers, permitted transfers, and more. |
+| [Daily Close Trial Balance Roll-Forward](./tb-rollforward-skill/README.md) | Daily, self-scheduling trial balance by legal entity with consolidated and roll-up views. Keeps a month-end baseline, reads only what changed each day, saves a dated Excel workbook, and emails a summary. Runs on a schedule so the close is always current. |
 
 ---
 

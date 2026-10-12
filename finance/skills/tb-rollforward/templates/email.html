@@ -1,0 +1,23 @@
+<!-- Email template. Two curly braces around a name = text (escaped); three = raw HTML block.
+     Names available: status_word, status_color, company, run_type, run_time, period, basis, output_path,
+     last_success, headline_text, next_run, numbers_html, warnings_html, error_html.
+     Edit freely; keep it inline-styled (email clients ignore style tags). -->
+<div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;color:#222">
+  <div style="background:{{status_color}};color:#ffffff;padding:14px 18px;font-size:16px">
+    <b>{{status_word}}</b> &nbsp;{{company}} &middot; trial balance by entity
+  </div>
+  <div style="padding:14px 18px;border:1px solid #dddddd;border-top:0">
+    <p style="margin:0 0 8px 0;font-size:14px">{{headline_text}}</p>
+    {{{numbers_html}}}
+    {{{warnings_html}}}
+    {{{error_html}}}
+    <table style="font-size:13px;margin-top:12px;border-collapse:collapse">
+      <tr><td style="color:#666;padding:2px 14px 2px 0">Run</td><td>{{run_type}} &middot; {{run_time}}</td></tr>
+      <tr><td style="color:#666;padding:2px 14px 2px 0">Period</td><td>{{period}} ({{basis}})</td></tr>
+      <tr><td style="color:#666;padding:2px 14px 2px 0">Saved to</td><td>{{output_path}}</td></tr>
+      <tr><td style="color:#666;padding:2px 14px 2px 0">Last good run</td><td>{{last_success}}</td></tr>
+      <tr><td style="color:#666;padding:2px 14px 2px 0">Next scheduled run</td><td>{{next_run}}</td></tr>
+    </table>
+    <p style="font-size:11px;color:#888;margin:14px 0 0 0">Sent automatically by the tb-rollforward skill. Edit this layout in Templates/email.html in your folder.</p>
+  </div>
+</div>

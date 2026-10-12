@@ -30,6 +30,17 @@
       "output": "excel"
     },
     {
+      "id": "tb-rollforward",
+      "name": "Daily Close Trial Balance Roll-Forward",
+      "command": "/tb-rollforward",
+      "department": "finance",
+      "description": "Daily, self-scheduling trial balance by legal entity (with consolidated and roll-up views, translated into one reporting currency) built from either NetSuite or Excel/CSV files in SharePoint/OneDrive. Keeps a saved month-end baseline, reads only what changed each day, saves a dated Excel workbook, and emails a summary. Setup questions are asked once and stored in config.json so scheduled runs never ask anything.",
+      "tags": ["finance", "accounting", "trial-balance", "daily-close", "consolidation", "netsuite", "sharepoint", "excel"],
+      "docs": "finance/daily close extract/README.md",
+      "connectors": ["netsuite", "sharepoint", "manual-upload"],
+      "output": "excel"
+    },
+    {
       "id": "allneurons-tabular-review",
       "name": "Contract Tabular Review",
       "command": "/allneurons-tabular-review",

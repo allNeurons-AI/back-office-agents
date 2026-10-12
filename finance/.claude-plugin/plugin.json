@@ -1,6 +1,6 @@
 {
   "name": "finance",
-  "description": "Finance AI skills for GL variance analysis, Change of Control lease extraction, and financial operations. Install to get all Finance skills in one step.",
+  "description": "Finance AI skills for GL variance analysis, Change of Control lease extraction, daily close trial balance roll-forward, and financial operations. Install to get all Finance skills in one step.",
   "version": "1.0.0",
   "author": {
     "name": "allNeurons-AI"
