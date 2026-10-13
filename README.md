@@ -36,8 +36,8 @@ Then install any domain plugin to get its skills. Skills are namespaced by domai
 | **Finance** | GL Flux Explainer, CoC Lease Extraction, Daily Close TB Roll-Forward | `/finance:allneurons-flux`, `/finance:coc-lease-extraction`, `/finance:tb-rollforward` |
 | **Legal** | Contract Tabular Review | `/legal:allneurons-tabular-review` |
 | **HR** | *(coming soon)* | — |
-| **Operations** | *(coming soon)* | — |
-| **Sales** | *(coming soon)* | — |
+| **Operations** | Daily Brief | `/operations:daily-brief` |
+| **Sales** | Call Prep | `/sales:call-prep` |
 | **Compliance** | *(coming soon)* | — |
 
 ---
@@ -60,6 +60,16 @@ Keeps a trial balance for every legal entity, plus consolidated and roll-up view
 **`/legal:allneurons-tabular-review`** — Contract Tabular Review  
 Reads commercial contracts in full and extracts 20 key terms (parties, term, governing law, assignment, liability, indemnification, and more) into a citation-backed Excel workbook. Every answer is tied to its source section. Includes an optional Change of Control deep-dive.
 
+### Operations
+
+**`/operations:daily-brief`** — Daily Brief  
+Pulls today's calendar, email, and chat into one page: lists every meeting plainly, detects real scheduling conflicts (double-books, impossible back-to-backs, double duty), decides which side should yield with a stated reason, and writes out a suggested fix. Surfaces what's due today or overdue, what people are actually asking of the user, and what's handled versus genuinely open. Never sends anything.
+
+### Sales
+
+**`/sales:call-prep`** — Call Prep  
+On demand, before an external call: identifies the account and who owns it, pulls relationship history from CRM/email/chat/docs, checks recent public signal on the company, and writes a 1-2 page Word document brief — who's on the call, where things stand, what's happening with them right now, a stated objective with discovery questions, and a sourced citation list. Never sends anything.
+
 ---
 
 ## Repository structure
@@ -81,8 +91,17 @@ legal/
     └── allneurons-tabular-review/SKILL.md
 
 hr/                           ← .claude-plugin/plugin.json (skills coming soon)
-operations/                   ← .claude-plugin/plugin.json (skills coming soon)
-sales/                        ← .claude-plugin/plugin.json (skills coming soon)
+
+operations/
+├── .claude-plugin/plugin.json
+└── skills/
+    └── daily-brief/SKILL.md
+
+sales/
+├── .claude-plugin/plugin.json
+└── skills/
+    └── call-prep/SKILL.md
+
 compliance/                   ← .claude-plugin/plugin.json (skills coming soon)
 ```
 
