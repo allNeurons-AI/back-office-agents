@@ -1,0 +1,977 @@
+<title>Agiloft Dashboards</title>
+
+<!--
+  ===========================================================================
+  AGILOFT LIVE DASHBOARD  -  template
+  ===========================================================================
+
+  EDIT ONLY THE `DATA` BLOCK NEAR THE BOTTOM OF THIS FILE.
+
+  Everything above it - styling, layout, chart rendering - is machinery, and so
+  is the small BOOTSTRAP script block that follows DATA. Leave both alone. The
+  bootstrap is a separate <script> on purpose: if DATA has a syntax error, that
+  block dies by itself and the bootstrap still runs and prints what went wrong,
+  instead of leaving a blank white page. Never merge them, and never delete the
+  bootstrap.
+
+  After writing DATA, re-read it once looking for the three faults that produce
+  a blank page: a trailing comma, an unescaped quote or apostrophe inside a
+  string, and an unbalanced bracket or brace. Every figure in DATA must come from an Agiloft tool call in the
+  current conversation. The sample values shipped here are placeholders and
+  must all be replaced before this is shown to anyone.
+
+  Card types available:
+    kpi     - the big-number tiles across the top of a dashboard
+    donut   - pie / donut breakdown        data: [{label, value}]
+    bar     - vertical bars, grouped or stacked
+    area    - smooth stacked area (cycle times)
+    table   - record list                  data: {columns: [], rows: [[]]}
+    links   - hotlink list                 data: [{label}]
+    empty   - a panel with nothing in it   data: {message}
+  ===========================================================================
+-->
+
+<style>
+  :root {
+    --nav: #142943;
+    --nav-ink: #eef3f9;
+    --bg: #eef1f5;
+    --surface: #ffffff;
+    --line: #d8dee7;
+    --line-soft: #e8ecf2;
+    --ink: #1d2733;
+    --ink-soft: #5d6b7d;
+    --ink-faint: #8d99a8;
+    --link: #1668b8;
+    --teal: #0f9d8f;
+    --purple: #6a4fc4;
+    --red: #c0392b;
+    --shadow: 0 1px 2px rgba(20, 41, 67, .06), 0 2px 8px rgba(20, 41, 67, .05);
+    --grid: #e4e9f0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --nav: #0d1a2b;
+      --nav-ink: #e8eef6;
+      --bg: #12181f;
+      --surface: #1a212a;
+      --line: #2e3742;
+      --line-soft: #262e38;
+      --ink: #e9eef4;
+      --ink-soft: #9dabbb;
+      --ink-faint: #798799;
+      --link: #6cb6f0;
+      --teal: #3ecfbd;
+      --purple: #a48bf0;
+      --red: #f0776a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .25);
+      --grid: #2a323d;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --nav: #0d1a2b;
+    --nav-ink: #e8eef6;
+    --bg: #12181f;
+    --surface: #1a212a;
+    --line: #2e3742;
+    --line-soft: #262e38;
+    --ink: #e9eef4;
+    --ink-soft: #9dabbb;
+    --ink-faint: #798799;
+    --link: #6cb6f0;
+    --teal: #3ecfbd;
+    --purple: #a48bf0;
+    --red: #f0776a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .25);
+    --grid: #2a323d;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- top chrome ---- */
+
+  .nav {
+    background: var(--nav);
+    color: var(--nav-ink);
+    padding: .625rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: .5rem; font-weight: 600; letter-spacing: .01em; }
+  .brand-mark {
+    width: 1.25rem; height: 1.25rem; border-radius: .25rem; flex: none;
+    background: linear-gradient(135deg, #4C9FD8, #5FCFC1);
+  }
+  .nav-sub { font-size: .8125rem; opacity: .72; }
+  .nav-right { margin-left: auto; font-size: .8125rem; opacity: .8; }
+
+  .tabs {
+    display: flex;
+    gap: .25rem;
+    padding: .625rem 1rem 0;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .tab {
+    appearance: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: none;
+    color: var(--ink-soft);
+    font: inherit;
+    font-size: .8125rem;
+    font-weight: 600;
+    padding: .5rem .875rem;
+    border-radius: .375rem .375rem 0 0;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--ink); background: var(--line-soft); }
+  .tab[aria-selected="true"] {
+    color: var(--ink);
+    background: var(--bg);
+    border-color: var(--line);
+    margin-bottom: -1px;
+  }
+
+  main { padding: 1rem; }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-bottom: 1rem;
+  }
+  .filter {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: .375rem;
+    padding: .5rem .75rem;
+    font-size: .8125rem;
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+  }
+  .filter b { color: var(--ink); font-weight: 600; margin-left: .375rem; }
+
+  /* ---- kpi tiles ---- */
+
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: .75rem;
+    margin-bottom: 1rem;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: .375rem;
+    box-shadow: var(--shadow);
+    padding: .875rem 1rem 1.125rem;
+    text-align: center;
+  }
+  .kpi-label {
+    font-size: .8125rem;
+    color: var(--ink-soft);
+    text-align: left;
+    margin-bottom: .5rem;
+    min-height: 2.4em;
+  }
+  .kpi-value {
+    font-size: clamp(1.5rem, 3.2vw, 2rem);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.01em;
+    line-height: 1.1;
+  }
+  .kpi-value.teal { color: var(--teal); }
+  .kpi-value.purple { color: var(--purple); }
+  .kpi-value.red { color: var(--red); }
+  .kpi-note { font-size: .75rem; color: var(--ink-faint); margin-top: .25rem; }
+
+  /* ---- card grid ---- */
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .75rem;
+  }
+  @media (max-width: 62rem) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 40rem) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: .375rem;
+    box-shadow: var(--shadow);
+    padding: .75rem .875rem 1rem;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .card.span2 { grid-column: span 2; }
+  .card.span3 { grid-column: span 3; }
+  @media (max-width: 62rem) {
+    .card.span3 { grid-column: span 2; }
+  }
+  @media (max-width: 40rem) {
+    .card.span2, .card.span3 { grid-column: span 1; }
+  }
+
+  .card-title {
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: .625rem;
+  }
+
+  .chart-row { display: flex; gap: .625rem; align-items: center; min-width: 0; }
+  .chart-row svg { flex: 1 1 auto; min-width: 0; height: auto; }
+
+  .legend {
+    flex: 0 1 auto;
+    max-height: 11rem;
+    overflow-y: auto;
+    font-size: .6875rem;
+    line-height: 1.5;
+    display: grid;
+    gap: .125rem;
+    min-width: 0;
+  }
+  .legend.wide { max-width: 42%; }
+  .legend-item { display: flex; align-items: center; gap: .375rem; color: var(--ink-soft); }
+  .swatch { width: .625rem; height: .625rem; border-radius: .125rem; flex: none; }
+  .legend-item span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .legend-toggle {
+    appearance: none; background: none; border: 0; padding: .5rem 0 0;
+    font: inherit; font-size: .75rem; color: var(--link); cursor: pointer;
+    text-align: left;
+  }
+  .legend-toggle:hover { text-decoration: underline; }
+
+  .source-line {
+    font-size: .6875rem;
+    color: var(--ink-faint);
+    padding-top: .5rem;
+    margin-top: .5rem;
+    border-top: 1px dashed var(--line);
+    line-height: 1.5;
+  }
+  .source-line b { color: var(--ink-soft); font-weight: 600; }
+  .source-line .mismatch { color: var(--red); font-weight: 600; }
+
+  .axis-label {
+    text-align: center;
+    font-size: .6875rem;
+    color: var(--ink-soft);
+    margin-top: .25rem;
+  }
+
+  /* ---- table card ---- */
+
+  .table-wrap { overflow-x: auto; margin: 0 -.875rem -1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .75rem; }
+  th {
+    text-align: left; font-weight: 600; color: var(--ink-soft);
+    padding: .5rem .75rem; white-space: nowrap;
+    border-bottom: 1px solid var(--line); background: var(--line-soft);
+    position: sticky; top: 0;
+  }
+  td {
+    padding: .5rem .75rem; border-bottom: 1px solid var(--line-soft);
+    white-space: nowrap; vertical-align: top;
+  }
+  td.wrap { white-space: normal; min-width: 11rem; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: 0; }
+  .table-note { font-size: .75rem; color: var(--ink-faint); padding: .5rem .875rem 0; }
+
+  /* ---- misc cards ---- */
+
+  .links { display: grid; gap: .5rem; }
+  .links a {
+    color: var(--link); font-size: .8125rem; text-decoration: none;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .links a:hover { text-decoration: underline; }
+  .links span.plain {
+    color: var(--ink-soft); font-size: .8125rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .links .bullet {
+    width: .75rem; height: .75rem; border-radius: 50%;
+    border: 2px solid currentColor; flex: none; opacity: .55;
+  }
+
+  .empty-panel {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    min-height: 5rem; color: var(--ink-faint); font-size: .8125rem;
+    text-align: center; padding: 1rem .5rem;
+  }
+
+  .footer {
+    margin-top: 1rem; padding: .75rem 1rem;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: .375rem; box-shadow: var(--shadow);
+    display: flex; flex-wrap: wrap; gap: .375rem 1.25rem;
+    font-size: .75rem; color: var(--ink-soft);
+  }
+  .footer b { color: var(--ink); font-weight: 600; }
+
+  .caveat {
+    margin-top: .75rem; padding: .625rem .875rem;
+    border-left: 3px solid var(--red); background: var(--surface);
+    border-radius: 0 .375rem .375rem 0;
+    font-size: .75rem; color: var(--ink-soft);
+  }
+
+  text { font-family: inherit; }
+</style>
+
+<div class="nav">
+  <div class="brand"><span class="brand-mark"></span> Agiloft</div>
+  <div class="nav-sub" id="nav-sub">Contract Management</div>
+  <div class="nav-right" id="nav-right"></div>
+</div>
+
+<div class="tabs" id="tabs" role="tablist"></div>
+
+<main id="board"></main>
+
+<script>
+(function () {
+  "use strict";
+
+  var PALETTE = ["#4C9FD8", "#5FCFC1", "#8A7CD6", "#F2A65C", "#7FC168", "#EFD04F",
+                 "#EA7B63", "#56C4E6", "#C08BD4", "#96A3B0", "#D98BA8", "#6BB8A0",
+                 "#B8CE5E", "#E7A0C4", "#7E93D8"];
+
+  function colour(i) { return PALETTE[i % PALETTE.length]; }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function fmt(n) {
+    if (typeof n !== "number" || !isFinite(n)) return esc(n);
+    return n.toLocaleString("en-US", { maximumFractionDigits: 1 });
+  }
+  function el(tag, cls, html) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (html != null) node.innerHTML = html;
+    return node;
+  }
+  function svgEl(w, h) {
+    return '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMid meet" role="img">';
+  }
+
+  // ---------------------------------------------------------------- donut
+
+  function donut(data, opts) {
+    opts = opts || {};
+    var W = 220, H = 200, cx = W / 2, cy = H / 2, R = 78;
+    var inner = opts.inner == null ? 0.55 : opts.inner;
+    var r = R * inner;
+    var total = data.reduce(function (s, d) { return s + (d.value || 0); }, 0);
+    var out = svgEl(W, H);
+
+    if (!total) {
+      out += '<text x="' + cx + '" y="' + cy + '" text-anchor="middle" ' +
+             'font-size="12" fill="var(--ink-faint)">No data</text></svg>';
+      return out;
+    }
+
+    var angle = -Math.PI / 2;
+    data.forEach(function (d, i) {
+      var frac = (d.value || 0) / total;
+      if (frac <= 0) return;
+      var sweep = frac * Math.PI * 2, end = angle + sweep;
+      var big = sweep > Math.PI ? 1 : 0;
+      var x1 = cx + R * Math.cos(angle), y1 = cy + R * Math.sin(angle);
+      var x2 = cx + R * Math.cos(end), y2 = cy + R * Math.sin(end);
+      var path;
+
+      if (frac > 0.999) {
+        path = 'M ' + (cx - R) + ' ' + cy + ' a ' + R + ' ' + R + ' 0 1 1 ' + (R * 2) + ' 0' +
+               ' a ' + R + ' ' + R + ' 0 1 1 ' + (-R * 2) + ' 0 Z';
+        if (r > 0) {
+          path += ' M ' + (cx - r) + ' ' + cy + ' a ' + r + ' ' + r + ' 0 1 0 ' + (r * 2) + ' 0' +
+                  ' a ' + r + ' ' + r + ' 0 1 0 ' + (-r * 2) + ' 0 Z';
+        }
+      } else if (r > 0) {
+        var ix1 = cx + r * Math.cos(end), iy1 = cy + r * Math.sin(end);
+        var ix2 = cx + r * Math.cos(angle), iy2 = cy + r * Math.sin(angle);
+        path = 'M ' + x1 + ' ' + y1 + ' A ' + R + ' ' + R + ' 0 ' + big + ' 1 ' + x2 + ' ' + y2 +
+               ' L ' + ix1 + ' ' + iy1 + ' A ' + r + ' ' + r + ' 0 ' + big + ' 0 ' + ix2 + ' ' + iy2 + ' Z';
+      } else {
+        path = 'M ' + cx + ' ' + cy + ' L ' + x1 + ' ' + y1 +
+               ' A ' + R + ' ' + R + ' 0 ' + big + ' 1 ' + x2 + ' ' + y2 + ' Z';
+      }
+
+      out += '<path d="' + path + '" fill="' + colour(i) + '" fill-rule="evenodd">' +
+             '<title>' + esc(d.label) + ': ' + fmt(d.value) + '</title></path>';
+
+      if (frac >= 0.05) {
+        var mid = angle + sweep / 2, lr = r > 0 ? (R + r) / 2 : R * 0.62;
+        out += '<text x="' + (cx + lr * Math.cos(mid)).toFixed(1) + '" y="' +
+               (cy + lr * Math.sin(mid) + 4).toFixed(1) + '" text-anchor="middle" ' +
+               'font-size="11" font-weight="600" fill="#1d2733">' +
+               Math.round(frac * 100) + '%</text>';
+      }
+      angle = end;
+    });
+
+    if (r > 0) {
+      out += '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-size="16" ' +
+             'font-weight="600" fill="var(--ink)">' + esc(opts.centre || fmt(total)) + '</text>';
+    }
+    return out + "</svg>";
+  }
+
+  // ------------------------------------------------------------------ bar
+
+  function bar(data, opts) {
+    opts = opts || {};
+    var series = opts.series || ["value"];
+    var stacked = !!opts.stacked;
+    var W = opts.width || 460, H = 250;
+    var padL = 46, padR = 8, padT = 14, padB = 62;
+    var iw = W - padL - padR, ih = H - padT - padB;
+
+    var vals = data.map(function (d) {
+      var v = valuesOf(d, series);
+      return stacked ? v.reduce(function (a, b) { return a + b; }, 0) : Math.max.apply(null, v);
+    });
+    var max = Math.max.apply(null, vals.concat([0])) || 1;
+    var ticks = niceTicks(max);
+    max = ticks[ticks.length - 1];
+
+    var out = svgEl(W, H);
+    ticks.forEach(function (t) {
+      var y = padT + ih - (t / max) * ih;
+      out += '<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) +
+             '" y2="' + y.toFixed(1) + '" stroke="var(--grid)" stroke-width="1"/>' +
+             '<text x="' + (padL - 6) + '" y="' + (y + 3.5).toFixed(1) + '" text-anchor="end" ' +
+             'font-size="9" fill="var(--ink-faint)">' + fmt(t) + '</text>';
+    });
+
+    var slot = iw / Math.max(data.length, 1);
+    var gap = Math.min(slot * 0.25, 10);
+    var bw = slot - gap;
+
+    data.forEach(function (d, i) {
+      var v = valuesOf(d, series);
+      var x0 = padL + i * slot + gap / 2;
+      if (stacked) {
+        var acc = 0;
+        v.forEach(function (val, s) {
+          if (val <= 0) return;
+          var h = (val / max) * ih;
+          var y = padT + ih - (acc / max) * ih - h;
+          out += '<rect x="' + x0.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + bw.toFixed(1) +
+                 '" height="' + h.toFixed(1) + '" fill="' + colour(s) + '">' +
+                 '<title>' + esc(d.label) + ' - ' + esc(series[s]) + ': ' + fmt(val) + '</title></rect>';
+          if (h > 13 && bw > 18) {
+            out += '<text x="' + (x0 + bw / 2).toFixed(1) + '" y="' + (y + h / 2 + 3.5).toFixed(1) +
+                   '" text-anchor="middle" font-size="9" font-weight="600" fill="#1d2733">' +
+                   fmt(val) + '</text>';
+          }
+          acc += val;
+        });
+      } else {
+        var sw = bw / v.length;
+        v.forEach(function (val, s) {
+          if (val <= 0) return;
+          var h = (val / max) * ih, y = padT + ih - h;
+          out += '<rect x="' + (x0 + s * sw).toFixed(1) + '" y="' + y.toFixed(1) + '" width="' +
+                 Math.max(sw - 1, 1).toFixed(1) + '" height="' + h.toFixed(1) + '" fill="' +
+                 colour(s) + '"><title>' + esc(d.label) + ': ' + fmt(val) + '</title></rect>';
+          if (sw > 16 && data.length <= 14) {
+            out += '<text x="' + (x0 + s * sw + sw / 2).toFixed(1) + '" y="' + (y - 3).toFixed(1) +
+                   '" text-anchor="middle" font-size="9" font-weight="600" fill="var(--ink-soft)">' +
+                   fmt(val) + '</text>';
+          }
+        });
+      }
+    });
+
+    out += tickLabels(data, padL, slot, padT + ih, W);
+    out += '<line x1="' + padL + '" y1="' + (padT + ih) + '" x2="' + (W - padR) + '" y2="' +
+           (padT + ih) + '" stroke="var(--line)" stroke-width="1"/>';
+    return out + "</svg>";
+  }
+
+  // ----------------------------------------------------------------- area
+
+  function area(data, opts) {
+    opts = opts || {};
+    var series = opts.series || ["value"];
+    var W = opts.width || 460, H = 250;
+    var padL = 46, padR = 8, padT = 14, padB = 62;
+    var iw = W - padL - padR, ih = H - padT - padB;
+
+    var totals = data.map(function (d) {
+      return valuesOf(d, series).reduce(function (a, b) { return a + b; }, 0);
+    });
+    var max = Math.max.apply(null, totals.concat([0])) || 1;
+    var ticks = niceTicks(max);
+    max = ticks[ticks.length - 1];
+
+    var out = svgEl(W, H);
+    ticks.forEach(function (t) {
+      var y = padT + ih - (t / max) * ih;
+      out += '<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) + '" y2="' +
+             y.toFixed(1) + '" stroke="var(--grid)" stroke-width="1"/>' +
+             '<text x="' + (padL - 6) + '" y="' + (y + 3.5).toFixed(1) + '" text-anchor="end" ' +
+             'font-size="9" fill="var(--ink-faint)">' + fmt(t) + '</text>';
+    });
+
+    var step = data.length > 1 ? iw / (data.length - 1) : 0;
+    var xAt = function (i) { return padL + (data.length > 1 ? i * step : iw / 2); };
+    var yAt = function (v) { return padT + ih - (v / max) * ih; };
+
+    var base = data.map(function () { return 0; });
+    series.forEach(function (name, s) {
+      var top = data.map(function (d, i) { return base[i] + valuesOf(d, series)[s]; });
+      var upper = top.map(function (v, i) { return [xAt(i), yAt(v)]; });
+      var lower = base.map(function (v, i) { return [xAt(i), yAt(v)]; }).reverse();
+      out += '<path d="' + smooth(upper) + " L " + lower.map(function (p) {
+        return p[0].toFixed(1) + " " + p[1].toFixed(1);
+      }).join(" L ") + ' Z" fill="' + colour(s) + '" fill-opacity=".85"/>';
+      out += '<path d="' + smooth(upper) + '" fill="none" stroke="' + colour(s) +
+             '" stroke-width="1.5"/>';
+      top.forEach(function (v, i) {
+        var raw = valuesOf(data[i], series)[s];
+        if (raw > 0 && data.length <= 12) {
+          out += '<text x="' + xAt(i).toFixed(1) + '" y="' + (yAt(v) - 4).toFixed(1) +
+                 '" text-anchor="middle" font-size="9" font-weight="600" ' +
+                 'fill="var(--ink-soft)">' + fmt(raw) + '</text>';
+        }
+      });
+      base = top;
+    });
+
+    out += tickLabels(data, padL, step, padT + ih, W, true);
+    out += '<line x1="' + padL + '" y1="' + (padT + ih) + '" x2="' + (W - padR) + '" y2="' +
+           (padT + ih) + '" stroke="var(--line)" stroke-width="1"/>';
+    return out + "</svg>";
+  }
+
+  // ------------------------------------------------------------- helpers
+
+  function valuesOf(d, series) {
+    if (d.values) return series.map(function (k) { return +d.values[k] || 0; });
+    return [+d.value || 0];
+  }
+
+  function niceTicks(max) {
+    var raw = max / 5;
+    var mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10));
+    var norm = raw / mag;
+    var stepMul = norm > 5 ? 10 : norm > 2 ? 5 : norm > 1 ? 2 : 1;
+    var step = stepMul * mag;
+    var out = [];
+    for (var v = 0; v <= max + step * 0.5; v += step) out.push(Math.round(v * 1000) / 1000);
+    return out.length > 1 ? out : [0, max];
+  }
+
+  function smooth(pts) {
+    if (!pts.length) return "";
+    if (pts.length < 3) {
+      return "M " + pts.map(function (p) { return p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" L ");
+    }
+    var d = "M " + pts[0][0].toFixed(1) + " " + pts[0][1].toFixed(1);
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      d += " C " + c1x.toFixed(1) + " " + c1y.toFixed(1) + ", " + c2x.toFixed(1) + " " +
+           c2y.toFixed(1) + ", " + p2[0].toFixed(1) + " " + p2[1].toFixed(1);
+    }
+    return d;
+  }
+
+  function tickLabels(data, padL, step, baseY, W, centred) {
+    var every = Math.ceil(data.length / (W > 700 ? 26 : 13));
+    var out = "";
+    data.forEach(function (d, i) {
+      if (i % every) return;
+      var x = centred ? padL + i * step : padL + i * step + step / 2;
+      var label = String(d.label == null ? "" : d.label);
+      if (label.length > 16) label = label.slice(0, 15) + "…";
+      out += '<text x="' + x.toFixed(1) + '" y="' + (baseY + 8) + '" font-size="9" ' +
+             'fill="var(--ink-soft)" text-anchor="end" transform="rotate(-45 ' + x.toFixed(1) +
+             ' ' + (baseY + 8) + ')">' + esc(label) + '</text>';
+    });
+    return out;
+  }
+
+  function legend(labels) {
+    var wrap = el("div", "legend" + (labels.length > 6 ? " wide" : ""));
+    labels.forEach(function (label, i) {
+      var item = el("div", "legend-item");
+      item.innerHTML = '<span class="swatch" style="background:' + colour(i) + '"></span>' +
+                       "<span>" + esc(label) + "</span>";
+      wrap.appendChild(item);
+    });
+    return wrap;
+  }
+
+  // ------------------------------------------------------------ rendering
+
+  function sourceLine(card) {
+    if (!card.source) return null;
+    var s = card.source, bits = [];
+    if (s.query)   bits.push("<b>Counted</b> " + esc(s.query));
+    if (s.records) bits.push("<b>From</b> " + esc(s.records));
+    if (s.widget) {
+      var w = "<b>Agiloft</b> " + esc(s.widget);
+      if (s.widgetValue != null) w += " shows " + esc(s.widgetValue);
+      if (s.differs) w += ' <span class="mismatch">- ' + esc(s.differs) + "</span>";
+      bits.push(w);
+    }
+    if (s.note) bits.push(esc(s.note));
+    return bits.length ? el("div", "source-line", bits.join(" &nbsp;·&nbsp; ")) : null;
+  }
+
+  function renderCard(card) {
+    var node = el("div", "card" + (card.span === 2 ? " span2" : card.span === 3 ? " span3" : ""));
+    node.appendChild(el("div", "card-title", esc(card.title || "")));
+
+    var data = card.data;
+
+    if (card.type === "table") {
+      var wrap = el("div", "table-wrap");
+      var html = "<table><thead><tr>";
+      (data.columns || []).forEach(function (c) { html += "<th>" + esc(c) + "</th>"; });
+      html += "</tr></thead><tbody>";
+      (data.rows || []).forEach(function (row) {
+        html += "<tr>";
+        row.forEach(function (cell, i) {
+          var cls = typeof cell === "number" ? "num" : (i === 0 || String(cell).length > 22 ? "wrap" : "");
+          html += '<td class="' + cls + '">' + (typeof cell === "number" ? fmt(cell) : esc(cell)) + "</td>";
+        });
+        html += "</tr>";
+      });
+      html += "</tbody></table>";
+      wrap.innerHTML = html;
+      node.appendChild(wrap);
+      if (data.note) node.appendChild(el("div", "table-note", esc(data.note)));
+      var srcT = sourceLine(card); if (srcT) node.appendChild(srcT);
+      return node;
+    }
+
+    if (card.type === "links") {
+      // Only render an anchor when a real destination is supplied. Anything
+      // without a url renders as plain text, never as a fake link.
+      var links = el("div", "links");
+      (data || []).forEach(function (item) {
+        var label = esc(item.label || item);
+        var url = item && typeof item.url === "string" ? item.url : "";
+        var safe = /^https:\/\//i.test(url);
+        links.innerHTML += safe
+          ? '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' +
+            '<span class="bullet"></span>' + label + "</a>"
+          : '<span class="plain"><span class="bullet"></span>' + label + "</span>";
+      });
+      node.appendChild(links);
+      var srcL = sourceLine(card); if (srcL) node.appendChild(srcL);
+      return node;
+    }
+
+    if (card.type === "empty" || !data || (data.length === 0)) {
+      node.appendChild(el("div", "empty-panel",
+        esc((data && data.message) || card.emptyMessage || "Nothing here")));
+      var srcE = sourceLine(card); if (srcE) node.appendChild(srcE);
+      return node;
+    }
+
+    var opts = card.options || {};
+    var row = el("div", "chart-row");
+    var labels;
+
+    if (card.type === "donut" || card.type === "pie") {
+      if (card.type === "pie") opts.inner = 0;
+      row.innerHTML = donut(data, opts);
+      labels = data.map(function (d) { return d.label + " (" + fmt(d.value) + ")"; });
+    } else if (card.type === "area") {
+      opts.width = card.span >= 2 ? 760 : 460;
+      row.innerHTML = area(data, opts);
+      labels = opts.series || ["value"];
+    } else {
+      opts.width = card.span >= 2 ? 760 : 460;
+      row.innerHTML = bar(data, opts);
+      labels = opts.series && opts.series.length > 1
+        ? opts.series
+        : data.map(function (d) { return d.label + " (" + fmt(d.value) + ")"; });
+    }
+
+    var showLegend = opts.legend !== false;
+    var leg = legend(labels);
+    if (showLegend) row.appendChild(leg); else leg.style.display = "none";
+    node.appendChild(row);
+
+    if (opts.xLabel) node.appendChild(el("div", "axis-label", esc(opts.xLabel)));
+
+    var toggle = el("button", "legend-toggle", "Show/Hide Legend");
+    toggle.addEventListener("click", function () {
+      var hidden = leg.style.display === "none";
+      leg.style.display = hidden ? "" : "none";
+      if (!hidden && !row.contains(leg)) row.appendChild(leg);
+    });
+    if (!row.contains(leg)) row.appendChild(leg);
+    node.appendChild(toggle);
+    var srcC = sourceLine(card); if (srcC) node.appendChild(srcC);
+    return node;
+  }
+
+  function renderDashboard(key) {
+    var dash = DATA.dashboards[key];
+    var board = document.getElementById("board");
+    board.innerHTML = "";
+    if (!dash) return;
+
+    if (dash.filters && dash.filters.length) {
+      var filters = el("div", "filters");
+      dash.filters.forEach(function (f) {
+        // accept both {label, value} and a plain string
+        var html = (f && typeof f === "object")
+          ? esc(f.label) + "<b>" + esc(f.value) + "</b>"
+          : "<b>" + esc(f) + "</b>";
+        filters.appendChild(el("div", "filter", html));
+      });
+      board.appendChild(filters);
+    }
+
+    if (dash.tiles && dash.tiles.length) {
+      var kpis = el("div", "kpis");
+      dash.tiles.forEach(function (t) {
+        var tile = el("div", "kpi");
+        tile.appendChild(el("div", "kpi-label", esc(t.label)));
+        tile.appendChild(el("div", "kpi-value " + (t.tone || ""),
+          typeof t.value === "number" ? fmt(t.value) : esc(t.value)));
+        if (t.note) tile.appendChild(el("div", "kpi-note", esc(t.note)));
+        kpis.appendChild(tile);
+      });
+      board.appendChild(kpis);
+    }
+
+    var grid = el("div", "grid");
+    (dash.cards || []).forEach(function (c) {
+      // One malformed card must not blank the whole dashboard.
+      try {
+        grid.appendChild(renderCard(c));
+      } catch (e) {
+        var bad = el("div", "card");
+        bad.appendChild(el("div", "card-title", esc((c && c.title) || "Panel")));
+        bad.appendChild(el("div", "empty",
+          "This panel could not be drawn: " + esc(e && e.message ? e.message : String(e)) +
+          ". The other panels on this dashboard are unaffected."));
+        grid.appendChild(bad);
+      }
+    });
+    board.appendChild(grid);
+
+    if (dash.caveat) board.appendChild(el("div", "caveat", esc(dash.caveat)));
+
+    var meta = DATA.meta || {};
+    var foot = el("div", "footer");
+    foot.innerHTML =
+      "<span><b>Source</b> " + esc(meta.instance || "Agiloft") +
+        (meta.kb ? " &middot; " + esc(meta.kb) : "") + "</span>" +
+      "<span><b>Signed in as</b> " + esc(meta.account || "unknown") + "</span>" +
+      "<span><b>Checked</b> " + esc(meta.checked || "") + "</span>" +
+      (meta.records ? "<span><b>Based on</b> " + esc(meta.records) + "</span>" : "");
+    board.appendChild(foot);
+  }
+
+  function init() {
+    var meta = DATA.meta || {};
+    document.getElementById("nav-sub").textContent = meta.area || "Contract Management";
+    document.getElementById("nav-right").textContent = meta.user || "";
+
+    var keys = Object.keys(DATA.dashboards || {});
+    var tabs = document.getElementById("tabs");
+    var active = DATA.active && DATA.dashboards[DATA.active] ? DATA.active : keys[0];
+
+    keys.forEach(function (key) {
+      var btn = el("button", "tab", esc(DATA.dashboards[key].name || key));
+      btn.setAttribute("role", "tab");
+      btn.setAttribute("aria-selected", key === active ? "true" : "false");
+      btn.addEventListener("click", function () {
+        Array.prototype.forEach.call(tabs.children, function (c) {
+          c.setAttribute("aria-selected", "false");
+        });
+        btn.setAttribute("aria-selected", "true");
+        renderDashboard(key);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      tabs.appendChild(btn);
+    });
+
+    renderDashboard(active);
+  }
+
+  window.__initDashboard = init;
+})();
+</script>
+
+<script>
+// =========================================================================
+//  DATA  -  THE ONLY BLOCK TO EDIT
+//  Replace every value below with figures from Agiloft tool calls.
+//  `active` decides which tab opens first: set it to the dashboard that
+//  answers the question the person just asked.
+// =========================================================================
+
+var DATA = {
+  meta: {
+    instance: "not connected",
+    kb: "",
+    area: "Contract Management",
+    user: "",
+    account: "no data fetched yet",
+    checked: "never",
+    records: "this template ships empty - every figure comes from Agiloft at run time"
+  },
+
+  active: "reporting",
+
+  // --------------------------------------------------------------------
+  //  EMPTY BY DESIGN.
+  //
+  //  This file contains no contract data and no sample numbers. Replace each
+  //  dashboard's `tiles` and `cards` with values fetched from the agiloft
+  //  connector in the current conversation. Leave a panel as type "empty" if
+  //  you could not fetch its data.
+  //
+  //  Shapes the renderer accepts:
+  //    tiles: [{ label, value, tone: "teal"|"purple"|"red", note }]
+  //    { title, type: "donut"|"pie", data: [{label, value}], options:{centre} }
+  //    { title, type: "bar",  data: [{label, value}]
+  //                       or  [{label, values:{seriesName: n}}],
+  //             options: { series:[...], stacked, xLabel, legend } }
+  //    { title, type: "area", data as bar, options: { series:[...], xLabel } }
+  //    { title, type: "table", data: { columns:[...], rows:[[...]], note } }
+  //    { title, type: "links", data: [{label, url}] }
+  //        url is optional and must be a full https:// address. Items without
+  //        one render as plain text - never invent a link that goes nowhere.
+  //    { title, type: "empty", data: { message } }
+  //  Any card may take span: 2 or span: 3.
+  //
+  //  EVERY card should also carry a source object:
+  //    source: {
+  //      query:       "contract end date 26 Aug - 24 Nov 2026, status Executed",
+  //      records:     "391 records",
+  //      widget:      "Upcoming Expiring Contracts 30-60-90 - All Contracts",
+  //      widgetValue: "391",
+  //      differs:     "we show 422 because we include unsigned contracts",
+  //      note:        "anything else the reader needs"
+  //    }
+  //  Omit widget/widgetValue/differs when no Agiloft widget covers the panel.
+  // --------------------------------------------------------------------
+
+  dashboards: {
+
+    reporting: {
+      name: "Contract Reporting Dashboard",
+      filters: [],
+      tiles: [],
+      cards: [{
+        title: "Contract Reporting", type: "empty", span: 3,
+        data: { message: "No data fetched yet. Ask a question about contracts and this fills in from Agiloft." }
+      }]
+    },
+
+    requester: {
+      name: "Contract Requester Dashboard",
+      filters: [],
+      tiles: [],
+      cards: [{
+        title: "Contract Requester", type: "empty", span: 3,
+        data: { message: "No data fetched yet. Ask about your own contracts and this fills in from Agiloft." }
+      }]
+    },
+
+    cycletimes: {
+      name: "Cycle Times Reporting Dashboard",
+      filters: [],
+      tiles: [],
+      cards: [{
+        title: "Cycle Times", type: "empty", span: 3,
+        data: { message: "No data fetched yet. Ask what is slowing contracts down and this fills in from Agiloft." }
+      }]
+    },
+
+    vendor: {
+      name: "Vendor Management",
+      filters: [],
+      tiles: [],
+      cards: [{
+        title: "Vendor Management", type: "empty", span: 3,
+        data: { message: "No data fetched yet. Ask about vendor contracts or upcoming renewals and this fills in from Agiloft." }
+      }]
+    }
+  }
+};
+
+</script>
+
+<!-- =========================================================================
+     BOOTSTRAP - deliberately a SEPARATE script block.
+     If the DATA block above has a syntax error, that script dies on its own
+     and this one still runs, so the page explains itself instead of rendering
+     a blank white panel with no clue what went wrong.
+     ========================================================================= -->
+<script>
+(function () {
+  function fail(msg, detail) {
+    var board = document.getElementById("board");
+    if (!board) return;
+    board.innerHTML =
+      '<div class="card" style="grid-column:1/-1">' +
+        '<h3>This dashboard did not render</h3>' +
+        '<p style="margin:10px 0 0;line-height:1.5">' + msg + '</p>' +
+        (detail ? '<pre style="margin:12px 0 0;white-space:pre-wrap;font-size:12px;opacity:.75">'
+                  + String(detail).replace(/[<&]/g, function (c) {
+                      return c === "<" ? "&lt;" : "&amp;"; }) + '</pre>' : "") +
+        '<p style="margin:12px 0 0;line-height:1.5">Tell Claude what this says - ' +
+        'it is a fault in the generated page, not in Agiloft, and the figures ' +
+        'in the chat are unaffected.</p>' +
+      '</div>';
+  }
+  if (typeof window.__initDashboard !== "function") {
+    return fail("The dashboard engine did not load.");
+  }
+  if (typeof DATA === "undefined") {
+    return fail("The DATA block failed to parse, so there was nothing to draw. " +
+                "This is almost always a syntax error in the generated data - " +
+                "a trailing comma, an unescaped quote, or a missing bracket.");
+  }
+  try {
+    window.__initDashboard();
+  } catch (e) {
+    fail("The dashboard engine threw while drawing.", e && (e.stack || e.message));
+  }
+})();
+</script>

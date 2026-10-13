@@ -51,6 +51,17 @@
       "docs": "legal/allneurons-tabular-review/readme.md",
       "connectors": ["manual-upload", "google-drive"],
       "output": "excel"
+    },
+    {
+      "id": "agiloft-dashboards",
+      "name": "Agiloft Contract Dashboards",
+      "command": "/agiloft-dashboards",
+      "department": "legal",
+      "description": "Answers contract questions from an Agiloft knowledgebase in plain language and keeps a live four-tab dashboard (Contract Reporting, Contract Requester, Cycle Times, Vendor Management) beside the chat. Discovers field names and statuses at runtime, cites the filter behind every figure, and is read-only.",
+      "tags": ["legal", "contracts", "clm", "agiloft", "dashboard", "reporting"],
+      "docs": "legal/agiloft-dashboards/README.md",
+      "connectors": ["agiloft"],
+      "output": "html-dashboard"
     }
   ]
 }

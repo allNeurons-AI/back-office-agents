@@ -34,7 +34,7 @@ Then install any domain plugin to get its skills. Skills are namespaced by domai
 | Plugin | Skills installed | Commands |
 |---|---|---|
 | **Finance** | GL Flux Explainer, CoC Lease Extraction, Daily Close TB Roll-Forward | `/finance:allneurons-flux`, `/finance:coc-lease-extraction`, `/finance:tb-rollforward` |
-| **Legal** | Contract Tabular Review | `/legal:allneurons-tabular-review` |
+| **Legal** | Contract Tabular Review, Agiloft Contract Dashboards | `/legal:allneurons-tabular-review`, `/legal:agiloft-dashboards` |
 | **HR** | *(coming soon)* | — |
 | **Operations** | *(coming soon)* | — |
 | **Sales** | *(coming soon)* | — |
@@ -60,6 +60,9 @@ Keeps a trial balance for every legal entity, plus consolidated and roll-up view
 **`/legal:allneurons-tabular-review`** — Contract Tabular Review  
 Reads commercial contracts in full and extracts 20 key terms (parties, term, governing law, assignment, liability, indemnification, and more) into a citation-backed Excel workbook. Every answer is tied to its source section. Includes an optional Change of Control deep-dive.
 
+**`/legal:agiloft-dashboards`** — Agiloft Contract Dashboards  
+Answers contract questions (what's expiring, what's stuck, who the counterparty is) from an Agiloft knowledgebase in plain language, and keeps a live four-tab dashboard open beside the chat. Field names and statuses are discovered at runtime, every figure names the filter it came from, and it never writes to Agiloft. Requires the Agiloft MCP connector.
+
 ---
 
 ## Repository structure
@@ -78,7 +81,8 @@ finance/
 legal/
 ├── .claude-plugin/plugin.json
 └── skills/
-    └── allneurons-tabular-review/SKILL.md
+    ├── allneurons-tabular-review/SKILL.md
+    └── agiloft-dashboards/ ← SKILL.md + assets/dashboard_template.html
 
 hr/                           ← .claude-plugin/plugin.json (skills coming soon)
 operations/                   ← .claude-plugin/plugin.json (skills coming soon)
