@@ -1,8 +1,8 @@
-<title>Agiloft Dashboards</title>
+<title>Contract Dashboards</title>
 
 <!--
   ===========================================================================
-  AGILOFT LIVE DASHBOARD  -  template
+  CONTRACT LIVE DASHBOARD  -  template (Agiloft, SharePoint or any source)
   ===========================================================================
 
   EDIT ONLY THE `DATA` BLOCK NEAR THE BOTTOM OF THIS FILE.
@@ -16,9 +16,9 @@
 
   After writing DATA, re-read it once looking for the three faults that produce
   a blank page: a trailing comma, an unescaped quote or apostrophe inside a
-  string, and an unbalanced bracket or brace. Every figure in DATA must come from an Agiloft tool call in the
-  current conversation. The sample values shipped here are placeholders and
-  must all be replaced before this is shown to anyone.
+  string, and an unbalanced bracket or brace. Every figure in DATA must come from a source read (Agiloft tool call,
+  SharePoint file or list read, attached file) in the current conversation. The template ships empty; every placeholder message must be replaced
+  before this is shown to anyone.
 
   Card types available:
     kpi     - the big-number tiles across the top of a dashboard
@@ -348,7 +348,7 @@
 </style>
 
 <div class="nav">
-  <div class="brand"><span class="brand-mark"></span> Agiloft</div>
+  <div class="brand"><span class="brand-mark"></span> <span id="brand-name">Contracts</span></div>
   <div class="nav-sub" id="nav-sub">Contract Management</div>
   <div class="nav-right" id="nav-right"></div>
 </div>
@@ -645,7 +645,7 @@
     if (s.query)   bits.push("<b>Counted</b> " + esc(s.query));
     if (s.records) bits.push("<b>From</b> " + esc(s.records));
     if (s.widget) {
-      var w = "<b>Agiloft</b> " + esc(s.widget);
+      var w = "<b>" + esc(((DATA.meta || {}).sourceName) || "Source") + "</b> " + esc(s.widget);
       if (s.widgetValue != null) w += " shows " + esc(s.widgetValue);
       if (s.differs) w += ' <span class="mismatch">- ' + esc(s.differs) + "</span>";
       bits.push(w);
@@ -784,7 +784,7 @@
       } catch (e) {
         var bad = el("div", "card");
         bad.appendChild(el("div", "card-title", esc((c && c.title) || "Panel")));
-        bad.appendChild(el("div", "empty",
+        bad.appendChild(el("div", "empty-panel",
           "This panel could not be drawn: " + esc(e && e.message ? e.message : String(e)) +
           ". The other panels on this dashboard are unaffected."));
         grid.appendChild(bad);
@@ -797,16 +797,19 @@
     var meta = DATA.meta || {};
     var foot = el("div", "footer");
     foot.innerHTML =
-      "<span><b>Source</b> " + esc(meta.instance || "Agiloft") +
+      "<span><b>Source</b> " + esc(meta.instance || "unknown source") +
         (meta.kb ? " &middot; " + esc(meta.kb) : "") + "</span>" +
       "<span><b>Signed in as</b> " + esc(meta.account || "unknown") + "</span>" +
       "<span><b>Checked</b> " + esc(meta.checked || "") + "</span>" +
-      (meta.records ? "<span><b>Based on</b> " + esc(meta.records) + "</span>" : "");
+      (meta.records ? "<span><b>Based on</b> " + esc(meta.records) + "</span>" : "") +
+      (meta.docsRead ? "<span><b>Documents read</b> " + esc(meta.docsRead) + "</span>" : "") +
+      (meta.mapped ? "<span><b>Mapped</b> " + esc(meta.mapped) + "</span>" : "");
     board.appendChild(foot);
   }
 
   function init() {
     var meta = DATA.meta || {};
+    document.getElementById("brand-name").textContent = meta.sourceName || "Contracts";
     document.getElementById("nav-sub").textContent = meta.area || "Contract Management";
     document.getElementById("nav-right").textContent = meta.user || "";
 
@@ -839,20 +842,23 @@
 <script>
 // =========================================================================
 //  DATA  -  THE ONLY BLOCK TO EDIT
-//  Replace every value below with figures from Agiloft tool calls.
+//  Replace every value below with figures read from the source in this conversation.
 //  `active` decides which tab opens first: set it to the dashboard that
 //  answers the question the person just asked.
 // =========================================================================
 
 var DATA = {
   meta: {
-    instance: "not connected",
-    kb: "",
+    sourceName: "Contracts",   // brand label: "Agiloft", "SharePoint", the system name
+    instance: "not connected", // the exact source: instance, site and file/list/folder
+    kb: "",                    // optional: knowledge base or library name
+    docsRead: "",              // document sources only, e.g. "50 of 212 (cap 50)"
+    mapped: "",                // e.g. "Status -> in flight / in force / closed"
     area: "Contract Management",
     user: "",
     account: "no data fetched yet",
     checked: "never",
-    records: "this template ships empty - every figure comes from Agiloft at run time"
+    records: "this template ships empty - every figure comes from the source at run time"
   },
 
   active: "reporting",
@@ -861,8 +867,8 @@ var DATA = {
   //  EMPTY BY DESIGN.
   //
   //  This file contains no contract data and no sample numbers. Replace each
-  //  dashboard's `tiles` and `cards` with values fetched from the agiloft
-  //  connector in the current conversation. Leave a panel as type "empty" if
+  //  dashboard's `tiles` and `cards` with values read from the source
+  //  in the current conversation. Leave a panel as type "empty" if
   //  you could not fetch its data.
   //
   //  Shapes the renderer accepts:
@@ -888,7 +894,9 @@ var DATA = {
   //      differs:     "we show 422 because we include unsigned contracts",
   //      note:        "anything else the reader needs"
   //    }
-  //  Omit widget/widgetValue/differs when no Agiloft widget covers the panel.
+  //  Omit widget/widgetValue/differs when no source widget or report covers the panel.
+  //  For SharePoint or files, query is the filter in words plus file and sheet,
+  //  records is the row/file count, note carries "extracted from document".
   // --------------------------------------------------------------------
 
   dashboards: {
@@ -899,7 +907,7 @@ var DATA = {
       tiles: [],
       cards: [{
         title: "Contract Reporting", type: "empty", span: 3,
-        data: { message: "No data fetched yet. Ask a question about contracts and this fills in from Agiloft." }
+        data: { message: "No data fetched yet. Ask a question about contracts and this fills in from your contract source." }
       }]
     },
 
@@ -909,7 +917,7 @@ var DATA = {
       tiles: [],
       cards: [{
         title: "Contract Requester", type: "empty", span: 3,
-        data: { message: "No data fetched yet. Ask about your own contracts and this fills in from Agiloft." }
+        data: { message: "No data fetched yet. Ask about your own contracts and this fills in from your contract source." }
       }]
     },
 
@@ -919,7 +927,7 @@ var DATA = {
       tiles: [],
       cards: [{
         title: "Cycle Times", type: "empty", span: 3,
-        data: { message: "No data fetched yet. Ask what is slowing contracts down and this fills in from Agiloft." }
+        data: { message: "No data fetched yet. Ask what is slowing contracts down and this fills in from your contract source." }
       }]
     },
 
@@ -929,7 +937,7 @@ var DATA = {
       tiles: [],
       cards: [{
         title: "Vendor Management", type: "empty", span: 3,
-        data: { message: "No data fetched yet. Ask about vendor contracts or upcoming renewals and this fills in from Agiloft." }
+        data: { message: "No data fetched yet. Ask about vendor contracts or upcoming renewals and this fills in from your contract source." }
       }]
     }
   }
@@ -956,7 +964,7 @@ var DATA = {
                   + String(detail).replace(/[<&]/g, function (c) {
                       return c === "<" ? "&lt;" : "&amp;"; }) + '</pre>' : "") +
         '<p style="margin:12px 0 0;line-height:1.5">Tell Claude what this says - ' +
-        'it is a fault in the generated page, not in Agiloft, and the figures ' +
+        'it is a fault in the generated page, not in the source, and the figures ' +
         'in the chat are unaffected.</p>' +
       '</div>';
   }

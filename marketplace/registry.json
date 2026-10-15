@@ -54,13 +54,13 @@
     },
     {
       "id": "agiloft-dashboards",
-      "name": "Agiloft Contract Dashboards",
+      "name": "Contract Dashboards",
       "command": "/agiloft-dashboards",
       "department": "legal",
-      "description": "Answers contract questions from an Agiloft knowledgebase in plain language and keeps a live four-tab dashboard (Contract Reporting, Contract Requester, Cycle Times, Vendor Management) beside the chat. Discovers field names and statuses at runtime, cites the filter behind every figure, and is read-only.",
-      "tags": ["legal", "contracts", "clm", "agiloft", "dashboard", "reporting"],
+      "description": "Answers contract questions in plain language and keeps a live four-tab dashboard (Contract Reporting, Contract Requester, Cycle Times, Vendor Management) beside the chat. Builds from Agiloft, SharePoint/OneDrive spreadsheets, lists and Word/PDF documents, any other connected system, or an attached file, one source per dashboard. Confirms the field mapping before building, cites the filter behind every figure, and is read-only.",
+      "tags": ["legal", "contracts", "clm", "agiloft", "sharepoint", "dashboard", "reporting"],
       "docs": "legal/agiloft-dashboards/README.md",
-      "connectors": ["agiloft"],
+      "connectors": ["agiloft", "sharepoint", "manual-upload"],
       "output": "html-dashboard"
     }
   ]

@@ -1,19 +1,25 @@
-# agiloft-dashboards — Contract Answers Without Opening Agiloft
+# agiloft-dashboards — Contract Answers From Agiloft, SharePoint or Any Source
 
 [![Claude Code · Cowork](https://img.shields.io/badge/Claude-Code%20%C2%B7%20Cowork-8a2be2)](https://claude.ai)
-[![Agiloft CLM](https://img.shields.io/badge/Agiloft-knowledgebase-0d9488)](https://www.agiloft.com)
+[![Sources](https://img.shields.io/badge/sources-Agiloft%20%C2%B7%20SharePoint%20%C2%B7%20files-0d9488)](#1-connect-a-source)
 [![Read only](https://img.shields.io/badge/access-read--only-1f6feb)](#-what-it-will-not-do)
 [![Schema](https://img.shields.io/badge/schema-discovered%20at%20runtime-c96442)](#-how-it-works)
 
 **Ask in plain English** · 📖 Skill source: SKILL.md inside agiloft-dashboards.skill · [🗒️ The skill](./agiloft-dashboards.skill)
 
-A skill that answers contract questions from an Agiloft knowledgebase in plain
-language and keeps a live four-tab dashboard open beside the chat. It reads
-through an existing Agiloft MCP connector — it ships no connector of its own and
-carries no data. Field names, status values and agreement types are discovered at
-the start of every session, so nothing is configured and nothing is assumed. Most
-of it is not about fetching data at all: it is a set of rules about the specific
-ways a contract number goes wrong.
+A skill that answers contract questions in plain language and keeps a live
+four-tab dashboard open beside the chat. It reads from Agiloft, from SharePoint or
+OneDrive (Excel/CSV trackers, SharePoint Lists, and Word/PDF contract documents),
+from any other connected system, or from a file attached to the chat. Each
+dashboard is built from one named source. It ships no connector and carries no
+data: field names, status values and agreement types are discovered at the start
+of every session, and for any source not mapped before, you confirm the field
+mapping before anything is built. Most of it is not about fetching data at all:
+it is a set of rules about the specific ways a contract number goes wrong.
+
+> **New in 2.0:** the skill is no longer limited to Agiloft. Agiloft behaviour is
+> unchanged; its rules now live in `references/source-agiloft.md`. See
+> [CHANGELOG.md](../skills/agiloft-dashboards/CHANGELOG.md).
 
 <p align="center">
   <img src="./assets/03-answer.png" width="900" alt="A contract question answered in chat, with the live dashboard beside it">
@@ -25,7 +31,10 @@ ways a contract number goes wrong.
 
 - **"Complete answers, then stop"** — a count is one sentence, a bottleneck is four, because the reasoning *is* the answer. No fixed length, no padding, and never two percentages handed over for the reader to compare themselves
 - **"Every figure names where it came from"** — not "from Agiloft", but the table, the fields filtered on, and the values used, so anyone can reproduce the number and settle the argument about whose report is right
-- **"Nothing hardcoded"** — status names, agreement types and field names are read from your knowledgebase at session start; there is no configuration file because there is nothing to configure
+- **"Nothing hardcoded"** — status names, agreement types and field names are read from the source at session start. `config.md` holds only caps and thresholds, never field names
+- **"One source per dashboard"** — every figure on a page has one named origin. If the source isn't clear, it asks rather than defaulting to Agiloft; if a folder name matches several SharePoint folders, it lists the full paths and asks which
+- **"Mapping confirmed before building"** — for a spreadsheet, list or document set, it proposes which columns are status, owner, counterparty and dates, shows the evidence, and waits for your yes. A role with no column stays empty rather than inferred
+- **"Documents read, capped and labelled"** — it reads at most `DOC_READ_CAP` documents per run and asks before reading more. Values pulled from a document are labelled "extracted from document", and a search snippet is never treated as having read the file
 - **"Statuses classified by meaning, not string match"** — `Lapsed` is Expired, `Void` is Cancelled, `Live` is Active; a genuinely ambiguous status is reported as counted one way rather than silently counted the other
 - **"The limit check"** — every fetch is compared against the page size it asked for. 500 returned against a limit of 500 means records were missed, so it refetches before that number reaches a tile. This is the most likely way a page size gets reported as a company total
 - **"Loose company search, split by entity"** — counterparty names are filed inconsistently, so the search is deliberately wide; results are then split back out by entity, so *Brightline Systems* and *Brightline Holdings* never merge into one answer
@@ -89,7 +98,19 @@ how a wrong number gets screenshotted and forwarded:
 
 ## 🚀 Installation
 
-### 1. Connect the Agiloft MCP connector
+### 1. Connect a source
+
+| Source | What you need |
+| --- | --- |
+| **Agiloft** | The Agiloft MCP connector registered as `agiloft` (below) |
+| **SharePoint / OneDrive** | The Microsoft 365 connector enabled for the chat. The skill only calls its read tools and never uploads, moves, renames or deletes |
+| **An attached file** | Nothing: attach an Excel, CSV, Word or PDF file to the chat |
+| **Any other system** | A connector for that system with read tools; otherwise attach an export |
+
+If the SharePoint connector isn't available, attach the file and the skill works
+from that instead.
+
+#### Agiloft
 
 This skill reads contract data through an Agiloft MCP connector and does not
 connect to Agiloft on its own. An Agiloft login is not enough — the connector is
@@ -205,7 +226,9 @@ see", not "none exist".
 
 <sub>Solid arrows are the path every question takes. Dashed arrows are conditional — the knowledgebase read, a follow-up re-scoping the page in place, and the Agiloft widget figure, which appears only when it differs from ours.</sub>
 
-`SKILL.md` is the operating procedure. In order:
+`SKILL.md` is the source-neutral core: intake, checkpoints, QA and feedback.
+The rules for each source live in `references/`. For Agiloft
+(`references/source-agiloft.md`), in order:
 
 1. **Detect the connector build** — use whichever read tools are present, never the write ones
 2. **Learn the knowledgebase** — one record read gives the real field names, which differ from the UI labels; statuses and agreement types come from the aggregation tools, or from paging the table once and counting
@@ -218,6 +241,12 @@ see", not "none exist".
 9. **Answer single-contract questions from populated fields only** — including Extract Key Terms fields where they exist, labelled as model-extracted
 10. **Build all four dashboards and attach the source lines** — then re-scope in place on follow-ups
 
+For SharePoint (`references/source-sharepoint.md`), it resolves the link to one
+exact folder path, takes an inventory of the files, finds the real header row in
+each spreadsheet, proposes the field mapping for you to confirm, and reads
+documents up to the cap. A documents-only folder usually fills the Reporting tab
+partly and leaves the others empty with the reason. That is a correct result.
+
 ## 🎯 When To Use (and When Not To)
 
 **Good fit:**
@@ -226,7 +255,7 @@ see", not "none exist".
 - Questions of shape and volume: how many, what is expiring, what is stuck, who the counterparty is, what the mix looks like
 - Anyone who has to justify a figure afterwards, since every number arrives with the filter that produced it
 
-**Reach for Agiloft itself when you need:**
+**Reach for the source system itself when you need:**
 
 - **To change something.** This skill is read-only and refuses write requests
 - **The terms inside a signed document** — payment terms, liability caps, governing law. Those live in the attachment, not the record, unless the knowledgebase runs Extract Key Terms
@@ -234,11 +263,24 @@ see", not "none exist".
 
 ## 🚫 What It Will Not Do
 
-- **Write.** The connector exposes create, update and delete. The skill never calls them, under any phrasing of the request
+- **Write.** The Agiloft and Microsoft 365 connectors both expose write tools. The skill never calls them, under any phrasing of the request
 - **Invent.** A missing field is reported as missing. A panel with no data says why
 - **Guess a total.** An unverified count gets refetched, not rounded off
 - **Merge legal entities.** Similarly-named companies are counted separately and both named
 - **Fake interactivity.** Nothing on the dashboard links anywhere it cannot go
+
+## 📁 What's in the skill
+
+| File | Purpose |
+| --- | --- |
+| `SKILL.md` | Core procedure: intake, checkpoints (CP1 source, CP2 mapping, CP3 document cap), QA, feedback |
+| `config.md` | Caps and thresholds the owner can tune (`DOC_READ_CAP`, `ROW_PAGE_LIMIT`, divergence gates) |
+| `references/source-*.md` | Rules per source: Agiloft, SharePoint, any other system or attached file |
+| `references/` (others) | Answering rules, counting, dashboard recipes and schema, record questions, QA checklist |
+| `assets/dashboard_template.html` | The four-tab dashboard, now source-neutral |
+| `tests/test-prompts.md` | Ten prompts to re-run after any change |
+| `memory/`, `logs/` | Feedback log, shared memory and run log (empty templates; filled in use) |
+| `CHANGELOG.md`, `HANDOFF.md` | Version history; owner hand-off and first-run checklist |
 
 ## 👤 Author
 
