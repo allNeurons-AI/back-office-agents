@@ -11,8 +11,13 @@
     },
     {
       "name": "legal",
-      "description": "Legal AI skills — contract tabular review, contract dashboards (Agiloft, SharePoint), M&A diligence, and more.",
+      "description": "Legal AI skills — contract tabular review, M&A diligence, and more.",
       "source": "./legal"
+    },
+    {
+      "name": "agiloft-dashboards",
+      "description": "Contract dashboards — plain-language contract answers and a live four-tab dashboard from Agiloft, SharePoint or an attached file. Read-only.",
+      "source": "./legal/agiloft-dashboards"
     },
     {
       "name": "hr",
