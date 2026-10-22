@@ -15,6 +15,11 @@
       "source": "./legal"
     },
     {
+      "name": "agiloft-dashboards",
+      "description": "Contract dashboards — plain-language contract answers and a live four-tab dashboard from Agiloft, SharePoint or an attached file. Read-only.",
+      "source": "./legal/agiloft-dashboards"
+    },
+    {
       "name": "hr",
       "description": "HR AI skills — people operations, onboarding, compliance tracking, and more.",
       "source": "./hr"
