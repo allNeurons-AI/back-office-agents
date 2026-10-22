@@ -34,8 +34,7 @@ Then install any domain plugin to get its skills. Skills are namespaced by domai
 | Plugin | Skills installed | Commands |
 |---|---|---|
 | **Finance** | GL Flux Explainer, CoC Lease Extraction, Daily Close TB Roll-Forward | `/finance:allneurons-flux`, `/finance:coc-lease-extraction`, `/finance:tb-rollforward` |
-| **Legal** | Contract Tabular Review | `/legal:allneurons-tabular-review` |
-| **Agiloft Dashboards** (Legal) | Contract Dashboards | `/agiloft-dashboards:agiloft-dashboards` |
+| **Legal** | Contract Tabular Review, Contract Dashboards | `/legal:allneurons-tabular-review`, `/legal:agiloft-dashboards` |
 | **HR** | *(coming soon)* | — |
 | **Operations** | *(coming soon)* | — |
 | **Sales** | *(coming soon)* | — |
@@ -61,7 +60,7 @@ Keeps a trial balance for every legal entity, plus consolidated and roll-up view
 **`/legal:allneurons-tabular-review`** — Contract Tabular Review  
 Reads commercial contracts in full and extracts 20 key terms (parties, term, governing law, assignment, liability, indemnification, and more) into a citation-backed Excel workbook. Every answer is tied to its source section. Includes an optional Change of Control deep-dive.
 
-**`/agiloft-dashboards:agiloft-dashboards`** — Contract Dashboards (its own plugin: `agiloft-dashboards`)  
+**`/legal:agiloft-dashboards`** — Contract Dashboards  
 Answers contract questions (what's expiring, what's stuck, who the counterparty is) in plain language, and keeps a live four-tab dashboard open beside the chat. Builds from Agiloft, SharePoint/OneDrive spreadsheets, lists and Word/PDF documents, any other connected system, or an attached file, one source per dashboard. Field names and statuses are discovered at runtime, the field mapping is confirmed before building, every figure names the filter it came from, and it never writes to any source.
 
 ---
@@ -81,11 +80,9 @@ finance/
 
 legal/
 ├── .claude-plugin/plugin.json
-├── skills/
-│   └── allneurons-tabular-review/SKILL.md
-└── agiloft-dashboards/       ← its own plugin: agiloft-dashboards
-    ├── .claude-plugin/plugin.json
-    └── skills/agiloft-dashboards/ ← SKILL.md + references/, assets/, config.md, tests/
+└── skills/
+    ├── allneurons-tabular-review/SKILL.md
+    └── agiloft-dashboards/   ← SKILL.md + references/, assets/, config.md, tests/
 
 hr/                           ← .claude-plugin/plugin.json (skills coming soon)
 operations/                   ← .claude-plugin/plugin.json (skills coming soon)
@@ -93,7 +90,7 @@ sales/                        ← .claude-plugin/plugin.json (skills coming soon
 compliance/                   ← .claude-plugin/plugin.json (skills coming soon)
 ```
 
-Each domain folder is a self-contained plugin. Adding a new skill means dropping a `skills/<skill-name>/SKILL.md` file into the right domain folder — no marketplace changes needed.
+Each domain folder is a self-contained plugin. Never put another `.claude-plugin/plugin.json` anywhere inside a domain folder: the marketplace sync skips the whole plugin. When you add or change a skill, bump `version` in that domain's `plugin.json`, or existing installs won't pick it up. Adding a new skill means dropping a `skills/<skill-name>/SKILL.md` file into the right domain folder — no marketplace changes needed.
 
 ---
 
