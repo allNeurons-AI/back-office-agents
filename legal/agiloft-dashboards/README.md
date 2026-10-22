@@ -19,7 +19,7 @@ it is a set of rules about the specific ways a contract number goes wrong.
 
 > **New in 2.0:** the skill is no longer limited to Agiloft. Agiloft behaviour is
 > unchanged; its rules now live in `references/source-agiloft.md`. See
-> [CHANGELOG.md](./skills/agiloft-dashboards/CHANGELOG.md).
+> [CHANGELOG.md](../skills/agiloft-dashboards/CHANGELOG.md).
 
 <p align="center">
   <img src="./assets/03-answer.png" width="900" alt="A contract question answered in chat, with the live dashboard beside it">
@@ -140,17 +140,18 @@ the create, update or delete tools, even on builds that expose them.
 
 ### 2. Install the skill
 
-**Claude Code, as a plugin (recommended).** This skill ships as its own plugin in
-the `back-office-agents` marketplace. With the marketplace added, run:
+**Claude Code, as part of the Legal plugin (recommended).** This skill ships in
+the Legal plugin of the `back-office-agents` marketplace. With the marketplace
+added, run:
 
 ```
-/plugin install agiloft-dashboards@back-office-agents
+/plugin install legal@back-office-agents
 ```
 
-Restart Claude Code. The skill is then available as
-`/agiloft-dashboards:agiloft-dashboards`, and it also triggers on its own when
-you ask a contract question. To pick up a new version later, run
-`/plugin marketplace update back-office-agents` and update the plugin.
+Restart Claude Code. The skill is then available as `/legal:agiloft-dashboards`,
+and it also triggers on its own when you ask a contract question. If Legal is
+already installed, run `/plugin marketplace update back-office-agents` and update
+the Legal plugin.
 
 **Claude Code, by hand (alternative).** Unzip `agiloft-dashboards.skill` into
 `~/.claude/skills/agiloft-dashboards/`, so that `SKILL.md` sits directly

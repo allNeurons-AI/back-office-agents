@@ -55,8 +55,7 @@
     {
       "id": "agiloft-dashboards",
       "name": "Contract Dashboards",
-      "command": "/agiloft-dashboards:agiloft-dashboards",
-      "plugin": "agiloft-dashboards",
+      "command": "/legal:agiloft-dashboards",
       "department": "legal",
       "description": "Answers contract questions in plain language and keeps a live four-tab dashboard (Contract Reporting, Contract Requester, Cycle Times, Vendor Management) beside the chat. Builds from Agiloft, SharePoint/OneDrive spreadsheets, lists and Word/PDF documents, any other connected system, or an attached file, one source per dashboard. Confirms the field mapping before building, cites the filter behind every figure, and is read-only.",
       "tags": ["legal", "contracts", "clm", "agiloft", "sharepoint", "dashboard", "reporting"],
